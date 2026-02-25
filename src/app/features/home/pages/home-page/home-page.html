@@ -1,0 +1,284 @@
+<main class="bg-white">
+  <section class="relative overflow-hidden pt-16 pb-20 lg:pt-24 lg:pb-32">
+    <div
+      class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-red-50 rounded-full blur-3xl opacity-60">
+    </div>
+    <div
+      class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-rose-50 rounded-full blur-3xl opacity-60">
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <div class="flex-1 text-center lg:text-left">
+          <span
+            class="inline-flex items-center py-1.5 px-4 rounded-full bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest mb-6">
+            <span class="flex h-2 w-2 rounded-full bg-red-600 mr-2 animate-pulse"></span>
+            Logística Solidária & Eficiente
+          </span>
+          <h1 class="text-5xl lg:text-7xl font-black text-slate-900 leading-[1.1] mb-8">
+            Rotas inteligentes para <span class="text-red-600">TODOS.</span>
+          </h1>
+          <p class="text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed">
+            Otimize a entrega de alimentos com tecnologia de ponta.
+            Reduza custos de combustível e garanta que a ajuda chegue mais rápido.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+            <button routerLink="/register" mat-flat-button color="primary"
+              class="py-8! px-10! text-lg! rounded-2xl! bg-red-600! !hover:bg-red-700 transition-all! shadow-2xl! shadow-red-200!">
+              Começar agora gratuitamente
+            </button>
+            <button routerLink="/login" mat-stroked-button
+              class="py-8! px-10! text-lg! rounded-2xl! border-slate-300! text-slate-700!">
+              Acessar minha conta
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 w-full max-w-2xl">
+          <div class="relative group">
+            <div
+              class="absolute -inset-1 bg-linear-to-r from-red-600 to-rose-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000">
+            </div>
+            <div class="relative bg-white p-3 rounded-3xl shadow-2xl border border-red-50">
+              <div
+                class="bg-slate-900 rounded-2xl overflow-hidden aspect-video relative flex items-center justify-center p-6 sm:p-8">
+                <!-- Grid Map Reference -->
+                <div class="absolute inset-0 z-0 pointer-events-none" style="background-image:
+                        linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+                     background-size: 20px 20px;">
+                </div>
+
+                <div class="relative z-10 w-full h-full flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <!-- Floating cards -->
+                  <div class="flex flex-col gap-4 w-full sm:w-[45%] lg:w-[40%] animate-fade-in z-20">
+                    <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 shadow-2xl">
+                      <div class="flex items-center gap-3 mb-1">
+                        <div
+                          class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                          <mat-icon class="scale-90!">local_shipping</mat-icon>
+                        </div>
+                        <span class="text-white/60 text-xs font-bold uppercase tracking-wider">Frota Ativa</span>
+                      </div>
+                      <p class="text-3xl font-black text-white px-2">124</p>
+                    </div>
+
+                    <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 shadow-2xl">
+                      <div class="flex items-center gap-3 mb-1">
+                        <div
+                          class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                          <mat-icon class="scale-90!">task_alt</mat-icon>
+                        </div>
+                        <span class="text-white/60 text-xs font-bold uppercase tracking-wider">Entregas</span>
+                      </div>
+                      <p class="text-3xl font-black text-white px-2">8,459</p>
+                    </div>
+                  </div>
+
+                  <!-- Abstract Map with pulsing dots -->
+                  <div
+                    class="w-full sm:w-[55%] lg:w-[60%] h-full relative border border-white/5 rounded-2xl bg-linear-to-br from-white/5 to-transparent overflow-hidden hidden sm:block">
+                    <svg class="w-full h-full absolute inset-0" viewBox="0 0 120 120"
+                      preserveAspectRatio="xMidYMid meet">
+                      <!-- Curved abstract lines -->
+                      <path d="M -10 100 Q 30 10 120 40" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="2"
+                        stroke-linecap="round" />
+                      <path d="M 20 110 Q 60 90 90 10" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="2"
+                        stroke-linecap="round" />
+                      <path d="M 10 30 Q 50 20 110 90" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="2"
+                        stroke-linecap="round" />
+
+                      <!-- Glowing nodes -->
+                      <circle cx="20" cy="90" r="3.5" fill="#ef4444" class="pulse-dot-custom"
+                        style="filter: drop-shadow(0 0 8px #ef4444);" />
+                      <circle cx="100" cy="50" r="2.5" fill="#3b82f6" class="pulse-dot-custom"
+                        style="animation-delay: 1s; filter: drop-shadow(0 0 8px #3b82f6);" />
+                      <circle cx="20" cy="110" r="3" fill="#10b981" class="pulse-dot-custom"
+                        style="animation-delay: 0.5s; filter: drop-shadow(0 0 8px #10b981);" />
+                      <circle cx="90" cy="15" r="3.5" fill="#ef4444" class="pulse-dot-custom"
+                        style="animation-delay: 1.5s; filter: drop-shadow(0 0 8px #ef4444);" />
+                      <circle cx="10" cy="30" r="2.5" fill="#f59e0b" class="pulse-dot-custom"
+                        style="animation-delay: 0.2s; filter: drop-shadow(0 0 8px #f59e0b);" />
+                      <circle cx="110" cy="90" r="3" fill="#8b5cf6" class="pulse-dot-custom"
+                        style="animation-delay: 0.8s; filter: drop-shadow(0 0 8px #8b5cf6);" />
+                      <circle cx="60" cy="60" r="4.5" fill="#ffffff" class="pulse-dot-custom"
+                        style="animation-delay: 0.3s; filter: drop-shadow(0 0 12px #ffffff);" />
+
+                      <!-- Abstract Moving Element -->
+                      <g class="animate-float" style="animation-duration: 4s;">
+                        <rect x="56" y="56" width="8" height="8" rx="2" fill="#ef4444"
+                          style="filter: drop-shadow(0 0 12px #ef4444);" />
+                        <circle cx="60" cy="60" r="1.5" fill="#ffffff" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 hidden md:flex items-center gap-4">
+                <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-600">
+                  <mat-icon>trending_up</mat-icon>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 font-bold uppercase tracking-tighter">Economia Média</p>
+                  <p class="text-xl font-black text-slate-900">32% menos tempo</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 border-y border-slate-100 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="text-center">
+          <h4 class="text-4xl font-black text-red-600 mb-1">+10k</h4>
+          <p class="text-slate-500 font-medium">Rotas Geradas</p>
+        </div>
+        <div class="text-center">
+          <h4 class="text-4xl font-black text-red-600 mb-1">500+</h4>
+          <p class="text-slate-500 font-medium">ONGs Atendidas</p>
+        </div>
+        <div class="text-center">
+          <h4 class="text-4xl font-black text-red-600 mb-1">15ton</h4>
+          <p class="text-slate-500 font-medium">Alimentos Movidos</p>
+        </div>
+        <div class="text-center">
+          <h4 class="text-4xl font-black text-red-600 mb-1">24/7</h4>
+          <p class="text-slate-500 font-medium">Disponibilidade</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-slate-50">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-16">Simples como preencher uma tabela</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+        <div
+          class="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-red-200 hover:shadow-2xl transition-all">
+          <div class="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-8">
+            <mat-icon class="text-3xl!">file_download</mat-icon>
+          </div>
+          <h3 class="text-xl font-bold mb-4">1. Baixe o Modelo</h3>
+          <p class="text-slate-600 leading-relaxed">Suba sua lista de endereços em segundos usando nosso Excel padrão.
+          </p>
+        </div>
+        <div
+          class="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-red-200 hover:shadow-2xl transition-all">
+          <div
+            class="w-14 h-14 bg-red-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-red-200">
+            <mat-icon class="text-3xl!">auto_fix_high</mat-icon>
+          </div>
+          <h3 class="text-xl font-bold mb-4">2. Otimize</h3>
+          <p class="text-slate-600 leading-relaxed">Nossa IA cria o caminho mais curto e eficiente para sua frota.</p>
+        </div>
+        <div
+          class="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-red-200 hover:shadow-2xl transition-all">
+          <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center mb-8">
+            <mat-icon class="text-3xl!">analytics</mat-icon>
+          </div>
+          <h3 class="text-xl font-bold mb-4">3. Gerencie</h3>
+          <p class="text-slate-600 leading-relaxed">Acompanhe métricas e comprove o impacto das doações realizadas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <div class="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="p-6 rounded-2xl bg-red-50 border border-red-100">
+            <mat-icon class="text-red-600 mb-3">map</mat-icon>
+            <h4 class="font-bold text-slate-900 mb-2">Múltiplos Veículos</h4>
+            <p class="text-sm text-slate-600">Distribua as paradas entre vários motoristas automaticamente.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+            <mat-icon class="text-slate-700 mb-3">history</mat-icon>
+            <h4 class="font-bold text-slate-900 mb-2">Histórico Completo</h4>
+            <p class="text-sm text-slate-600">Acesse rotas passadas e audite cada entrega realizada.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+            <mat-icon class="text-slate-700 mb-3">timer</mat-icon>
+            <h4 class="font-bold text-slate-900 mb-2">Janelas de Horário</h4>
+            <p class="text-sm text-slate-600">Defina prazos específicos para cada ponto de entrega.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-red-50 border border-red-100">
+            <mat-icon class="text-red-600 mb-3">cloud_done</mat-icon>
+            <h4 class="font-bold text-slate-900 mb-2">Exportação Direta</h4>
+            <p class="text-sm text-slate-600">Envie a rota pronta para o Google Maps dos motoristas.</p>
+          </div>
+        </div>
+        <div class="lg:w-1/2">
+          <h2 class="text-4xl font-black text-slate-900 mb-6 leading-tight">Tecnologia que entende a <span
+              class="text-red-600">urgência</span> da sua causa.</h2>
+          <p class="text-lg text-slate-600 mb-8">Nossa plataforma não é apenas um otimizador de mapas; é uma ferramenta
+            desenhada para maximizar o impacto social, reduzindo desperdícios operacionais.</p>
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3 font-medium text-slate-700">
+              <mat-icon class="text-red-600">check_circle</mat-icon> Redução real na emissão de CO2
+            </li>
+            <li class="flex items-center gap-3 font-medium text-slate-700">
+              <mat-icon class="text-red-600">check_circle</mat-icon> Menos tempo de espera para comunidades carentes
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 bg-red-600 text-white overflow-hidden relative">
+    <div class="absolute inset-0 opacity-10 pointer-events-none"
+      style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;">
+    </div>
+    <div
+      class="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 text-center lg:text-left">
+      <div>
+        <h2 class="text-3xl font-bold mb-2">Escalabilidade para qualquer demanda</h2>
+        <p class="text-red-100 opacity-90">Processamento robusto com RabbitMQ e Google OR-Tools v9.8.</p>
+      </div>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <span
+          class="px-5 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 font-mono text-xs tracking-tighter uppercase">High
+          Performance API</span>
+        <span
+          class="px-5 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 font-mono text-xs tracking-tighter uppercase">Asynchronous
+          Processing</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-slate-900 text-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-black mb-8">Pronto para transformar sua logística?</h2>
+        <p class="text-slate-400 text-xl mb-12">Comece a otimizar suas entregas hoje mesmo. Sem custos ocultos para
+          instituições filantrópicas.</p>
+
+        <div class="inline-flex flex-col sm:flex-row gap-4">
+          <button routerLink="/register" mat-flat-button
+            class="bg-red-600! text-white! py-8! px-12! text-xl! rounded-2xl! font-bold!">
+            Criar minha conta grátis
+          </button>
+        </div>
+
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 text-left border-t border-slate-800 pt-16">
+          <div>
+            <h5 class="font-bold text-red-500 mb-2">É realmente gratuito?</h5>
+            <p class="text-slate-400 text-sm">Sim, para operações de impacto social e volumes iniciais, nossa ferramenta
+              é e sempre será gratuita.</p>
+          </div>
+          <div>
+            <h5 class="font-bold text-red-500 mb-2">Preciso de integração técnica?</h5>
+            <p class="text-slate-400 text-sm">Nenhuma. Você só precisa de uma planilha Excel ou CSV para começar a gerar
+              suas rotas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,28 @@
+@keyframes moveDash {
+    to {
+        stroke-dashoffset: -20;
+    }
+}
+
+.animate-dash-line {
+    stroke-dasharray: 4 6;
+    animation: moveDash 1.5s linear infinite;
+}
+
+.pulse-dot-custom {
+    animation: pulseOpacity 2s infinite ease-in-out;
+}
+
+@keyframes pulseOpacity {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+}
