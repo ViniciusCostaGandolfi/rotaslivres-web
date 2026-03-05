@@ -1,18 +1,18 @@
 import { AdminRoute } from "../interfaces/admin-route";
-import { UserDto } from "../interfaces/usuario";
+import { UserDto } from "../interfaces/user";
 
 
 
 export const usuarioRoutes: AdminRoute[] = [
   {
-    title: 'Início', 
+    title: 'Início',
     icon: 'dashboard',
     href: '/admin'
   },
   {
-      title: 'Instituição',
-      icon: 'insert_chart',
-      href: '/admin/instituicoes'
+    title: 'Instituição',
+    icon: 'insert_chart',
+    href: '/admin/instituicoes'
   },
   {
     title: 'Meu Perfil',
@@ -23,20 +23,20 @@ export const usuarioRoutes: AdminRoute[] = [
 
 
 const adminRoutes: AdminRoute[] = [
-    {
+  {
     title: 'Início',
     icon: 'dashboard',
     href: '/admin'
   },
   {
-      title: 'Instituições',
-      icon: 'insert_chart',
-      href: '/admin/instituicoes'
+    title: 'Instituições',
+    icon: 'insert_chart',
+    href: '/admin/instituicoes'
   },
   {
-      title: 'Usuários',
-      icon: 'group',
-      href: '/admin/usuarios'
+    title: 'Usuários',
+    icon: 'group',
+    href: '/admin/usuarios'
   },
   {
     title: 'Meu Perfil',

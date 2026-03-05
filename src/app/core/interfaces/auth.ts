@@ -1,4 +1,4 @@
-import { UserBaseDto, UserDto } from "./usuario"
+import { UserBaseDto, UserDto } from "./user"
 
 export interface AuthToken {
     token: string

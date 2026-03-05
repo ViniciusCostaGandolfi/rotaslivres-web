@@ -17,12 +17,12 @@ export const routes: Routes = [
                 title: 'RotaSmart - Home'
             },
             {
-                path: 'entrar',
+                path: 'login',
                 component: LoginPage,
                 title: 'RotaSmart - Entrar'
             },
             {
-                path: 'registrar',
+                path: 'sigin',
                 component: SiginPage,
                 title: 'RotaSmart - Cadastrar'
             }

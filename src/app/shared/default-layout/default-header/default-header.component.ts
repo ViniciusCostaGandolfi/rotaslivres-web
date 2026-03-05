@@ -8,8 +8,8 @@ import { CommonModule } from "@angular/common";
 import { map, filter } from 'rxjs';
 import { mockDefaultRoutes } from '../../../core/mocks/default-routes';
 import { MatDividerModule } from "@angular/material/divider";
-import { ScrollToService } from '../../../core/scroll-to/scroll-to.service';
-import { ScrollYService } from '../../../core/scroll-y/scroll-y.service';
+import { ScrollToService } from '../../../core/services/scroll-to/scroll-to.service';
+import { ScrollYService } from '../../../core/services/scroll-y/scroll-y.service';
 
 @Component({
   selector: 'app-default-header',
