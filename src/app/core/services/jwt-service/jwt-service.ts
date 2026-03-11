@@ -1,32 +1,25 @@
-import { isPlatformBrowser } from '@angular/common';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
-
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JwtService {
-  private readonly platformId = inject(PLATFORM_ID);
+  private cookieService = inject(CookieService);
 
   saveToken(token: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(environment.GRADEHORARIOS_TOKEN, token);
-    }
+    // Save token with 14 days expiration (assuming same as backend)
+    this.cookieService.set(environment.GRADEHORARIOS_TOKEN, token, 14, '/');
   }
 
   deleteToken(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(environment.GRADEHORARIOS_TOKEN);
-    }
+    this.cookieService.delete(environment.GRADEHORARIOS_TOKEN, '/');
   }
 
   getToken(): string {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(environment.GRADEHORARIOS_TOKEN) ?? '';
-    }
-    return '';
+    return this.cookieService.get(environment.GRADEHORARIOS_TOKEN) ?? '';
   }
 
   getExp(): number {
@@ -42,10 +35,6 @@ export class JwtService {
   }
 
   hasToken(): boolean {
-    if (!isPlatformBrowser(this.platformId)) {
-      return false;
-    }
-
     const token = this.getToken();
     if (this.hasExpired() && !!token) {
       this.deleteToken();

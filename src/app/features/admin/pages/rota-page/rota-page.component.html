@@ -1,0 +1,59 @@
+<div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+    <mat-spinner diameter="50"></mat-spinner>
+</div>
+
+<div *ngIf="hasError" class="p-8 text-center text-red-600">
+    <mat-icon class="scale-150 mb-4">error_outline</mat-icon>
+    <h2 class="text-xl">Erro ao carregar a rota</h2>
+    <button mat-button color="warn" (click)="goBack()">Voltar</button>
+</div>
+
+<div *ngIf="!isLoading && !hasError" class="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
+    <header class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+        <div class="flex items-center gap-4">
+            <button mat-icon-button (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Detalhes da Rota</h1>
+                <p class="text-sm text-gray-500">Visualização do resultado do processamento</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="bg-white p-6 rounded-lg shadow-md">
+        <table mat-table [dataSource]="dataSource" class="w-full">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nome </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="px-2 py-1 rounded-full text-xs font-semibold"
+                        [ngClass]="element.status === 'COMPLETE' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'">
+                        {{element.status}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="duration">
+                <th mat-header-cell *matHeaderCellDef> Duração Estimada </th>
+                <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="warn">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </main>
+</div>

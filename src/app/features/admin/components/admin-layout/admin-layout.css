@@ -1,0 +1,87 @@
+.admin-container {
+    height: 100vh;
+    width: 100vw;
+}
+
+.admin-sidenav {
+    width: 280px;
+    background-color: var(--mat-sidenav-container-background-color, #fff);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    /* Lighter border */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03);
+    /* Soft shadow */
+}
+
+.admin-sidenav-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    height: 64px;
+}
+
+.logo-text {
+    font-weight: 800;
+    font-size: 24px;
+    color: #d32f2f;
+    /* Primary color */
+    letter-spacing: 0.5px;
+}
+
+.admin-nav-list {
+    padding-top: 16px;
+}
+
+.admin-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    /* Very light gray for contrast */
+}
+
+.admin-toolbar {
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.87);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    /* Subdued shadow */
+    z-index: 2;
+    /* Ensure it stays above content */
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.user-greeting {
+    font-size: 15px;
+    margin-right: 16px;
+    font-weight: 500;
+}
+
+.main-content-area {
+    flex: 1;
+    padding: 32px;
+    /* A bit more breathing room */
+    overflow-y: auto;
+}
+
+/* Active route styling */
+.active {
+    background-color: rgba(211, 47, 47, 0.08) !important;
+    /* Soft highlight */
+    border-right: 4px solid #d32f2f;
+    /* Right border accent */
+    color: #d32f2f !important;
+}
+
+.active mat-icon {
+    color: #d32f2f !important;
+}
+
+/* Global hover effect for nav items */
+::ng-deep .mat-mdc-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}

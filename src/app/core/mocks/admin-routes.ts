@@ -10,49 +10,34 @@ export const usuarioRoutes: AdminRoute[] = [
     href: '/admin'
   },
   {
-    title: 'Instituição',
-    icon: 'insert_chart',
-    href: '/admin/instituicoes'
+    title: 'Rotas',
+    icon: 'route',
+    href: '/admin/rotas'
   },
   {
     title: 'Meu Perfil',
     icon: 'account_circle',
     href: '/admin/perfil'
   }
-]
-
+];
 
 const adminRoutes: AdminRoute[] = [
-  {
-    title: 'Início',
-    icon: 'dashboard',
-    href: '/admin'
-  },
-  {
-    title: 'Instituições',
-    icon: 'insert_chart',
-    href: '/admin/instituicoes'
-  },
+  ...usuarioRoutes.slice(0, 2),
   {
     title: 'Usuários',
     icon: 'group',
     href: '/admin/usuarios'
   },
-  {
-    title: 'Meu Perfil',
-    icon: 'account_circle',
-    href: '/admin/perfil'
-  },
+  ...usuarioRoutes.slice(2),
   {
     title: 'Configurações',
     icon: 'settings',
     href: '/admin/configuracoes'
-  },
-
-]
+  }
+];
 
 export function getRoutes(usuario: UserDto) {
-  if (usuario.role === 'ROLE_USER') {
+  if (usuario.role === 'ROLE_ADMIN') {
     return adminRoutes;
   } else {
     return usuarioRoutes;

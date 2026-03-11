@@ -1,0 +1,31 @@
+<mat-sidenav-container class="admin-container">
+    <mat-sidenav #sidenav mode="side" opened class="admin-sidenav">
+        <mat-toolbar class="admin-sidenav-header">
+            <span class="logo-text">RotaSmart</span>
+        </mat-toolbar>
+        <mat-nav-list class="admin-nav-list">
+            <a mat-list-item *ngFor="let route of routes" [routerLink]="route.href" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: route.href === '/admin'}">
+                <mat-icon matListItemIcon>{{route.icon}}</mat-icon>
+                <div matListItemTitle>{{route.title}}</div>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="admin-content">
+        <mat-toolbar class="admin-toolbar">
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="spacer"></span>
+            <span class="user-greeting" *ngIf="user$ | async as userObj">Olá, {{userObj.user.name.split(' ')[0]}}</span>
+            <button mat-icon-button (click)="logout()">
+                <mat-icon>logout</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <main class="main-content-area">
+            <router-outlet></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>
