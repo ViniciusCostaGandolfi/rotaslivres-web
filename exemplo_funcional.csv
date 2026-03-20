@@ -1,0 +1,11 @@
+volume_litros;peso_kg;cep;rua;numero;bairro;cidade;uf;latitude;longitude
+10.5;25.0;13480-010;Rua Santa Cruz;120;Centro;Limeira;SP;-22.564121;-47.400512
+8.2;15.5;13484-015;Avenida Fabrício Vampré;450;Jardim São Paulo;Limeira;SP;-22.578543;-47.412087
+12.0;30.0;13481-200;Rua Tiradentes;88;Centro;Limeira;SP;-22.561098;-47.403211
+4.5;10.2;13485-050;Rua Dr. Trajano de Barros Camargo;1200;Centro;Limeira;SP;-22.567812;-47.405543
+15.0;25.0;13482-130;Avenida Maria Theresa S de Barros Camargo;300;Jardim Aquarius;Limeira;SP;-22.582091;-47.421512
+6.7;12.8;13487-005;Rua Senador Vergueiro;65;Centro;Limeira;SP;-22.563512;-47.398098
+9.0;20.0;13483-020;Rua Boa Morte;1500;Centro;Limeira;SP;-22.569543;-47.409012
+20.0;25.5;13486-110;Avenida Major José Levy Sobrinho;2500;Vila Esteves;Limeira;SP;-22.555012;-47.392087
+5.5;11.0;13480-450;Rua Carlos Gomes;410;Centro;Limeira;SP;-22.565098;-47.402011
+11.2;28.4;13481-500;Avenida Campinas;900;Vila Independência;Limeira;SP;-22.572043;-47.415087

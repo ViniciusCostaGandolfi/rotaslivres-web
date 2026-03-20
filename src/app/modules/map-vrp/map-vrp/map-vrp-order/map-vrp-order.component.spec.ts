@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SolucaoPageComponent } from './solucao-page.component';
+import { MapVrpOrderComponent } from './map-vrp-order.component';
 
-describe('SolucaoPageComponent', () => {
-  let component: SolucaoPageComponent;
-  let fixture: ComponentFixture<SolucaoPageComponent>;
+describe('MapVrpOrderComponent', () => {
+  let component: MapVrpOrderComponent;
+  let fixture: ComponentFixture<MapVrpOrderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SolucaoPageComponent]
+      imports: [MapVrpOrderComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SolucaoPageComponent);
+    fixture = TestBed.createComponent(MapVrpOrderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

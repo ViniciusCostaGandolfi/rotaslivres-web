@@ -8,6 +8,7 @@ import { AdminPage } from './features/admin/pages/admin-page/admin-page';
 import { AdminLayout } from './features/admin/components/admin-layout/admin-layout';
 import { RotaPageComponent } from './features/admin/pages/rota-page/rota-page.component';
 import { NovaRotaPageComponent } from './features/admin/pages/nova-rota-page/nova-rota-page.component';
+import { PerfilPage } from './features/admin/pages/perfil-page/perfil-page';
 
 export const routes: Routes = [
     {
@@ -18,17 +19,17 @@ export const routes: Routes = [
                 path: '',
                 component: HomePage,
                 pathMatch: 'full',
-                title: 'RotaSmart - Home'
+                title: 'Rotas Livres - Home'
             },
             {
                 path: 'login',
                 component: LoginPage,
-                title: 'RotaSmart - Entrar'
+                title: 'Rotas Livres - Entrar'
             },
             {
                 path: 'sigin',
                 component: SiginPage,
-                title: 'RotaSmart - Cadastrar'
+                title: 'Rotas Livres - Cadastrar'
             }
         ]
     },
@@ -39,17 +40,27 @@ export const routes: Routes = [
             {
                 path: '',
                 component: AdminPage,
-                title: 'RotaSmart - Admin'
+                title: 'Rotas Livres - Admin'
             },
             {
-                path: 'rotas',
+                path: 'roterizacao',
+                loadComponent: () => import('./features/admin/pages/minhas-rotas-page/minhas-rotas-page.component').then(m => m.MinhasRotasPageComponent),
+                title: 'Rotas Livres - Minhas Roteirizações'
+            },
+            {
+                path: 'roterizacao/nova',
                 component: NovaRotaPageComponent,
-                title: 'RotaSmart - Rotas'
+                title: 'Rotas Livres - Nova Roteirização'
             },
             {
-                path: 'rotas/:id',
+                path: 'roterizacao/:id',
                 component: RotaPageComponent,
-                title: 'RotaSmart - Visualizar Rota'
+                title: 'Rotas Livres - Visualizar Roteirização'
+            },
+            {
+                path: 'perfil',
+                component: PerfilPage,
+                title: 'Rotas Livres - Meu Perfil'
             }
         ]
     },

@@ -1,31 +1,43 @@
-<mat-sidenav-container class="admin-container">
-    <mat-sidenav #sidenav mode="side" opened class="admin-sidenav">
-        <mat-toolbar class="admin-sidenav-header">
-            <span class="logo-text">RotaSmart</span>
-        </mat-toolbar>
-        <mat-nav-list class="admin-nav-list">
-            <a mat-list-item *ngFor="let route of routes" [routerLink]="route.href" routerLinkActive="active"
+<mat-drawer-container class="h-screen w-screen" autosize>
+
+    <mat-drawer #drawer mode="side" opened class="w-64 bg-white! border-r border-gray-200">
+        <div class="h-14 flex items-center justify-between px-4 border-b border-gray-200">
+            <span class="font-extrabold text-xl text-red-600 tracking-wide">Rotas Livres</span>
+            <button mat-icon-button class="text-gray-400!" (click)="toggleDrawer(drawer)">
+                <mat-icon class="text-lg!">chevron_left</mat-icon>
+            </button>
+        </div>
+        <mat-nav-list class="pt-2 h-[calc(100vh-3.5rem)] flex flex-col">
+            <a mat-list-item *ngFor="let route of routes" [routerLink]="route.href"
+                routerLinkActive="bg-red-50! border-r-4! border-red-600! text-red-600!"
                 [routerLinkActiveOptions]="{exact: route.href === '/admin'}">
                 <mat-icon matListItemIcon>{{route.icon}}</mat-icon>
                 <div matListItemTitle>{{route.title}}</div>
             </a>
+            <div class="flex-1"></div>
+
+            <mat-list-item (click)="logout()"
+                class="cursor-pointer text-gray-600! hover:bg-red-50! hover:text-red-600! mb-4">
+                <mat-icon matListItemIcon>logout</mat-icon>
+                <div matListItemTitle>Sair</div>
+            </mat-list-item>
         </mat-nav-list>
-    </mat-sidenav>
+    </mat-drawer>
 
-    <mat-sidenav-content class="admin-content">
-        <mat-toolbar class="admin-toolbar">
-            <button mat-icon-button (click)="sidenav.toggle()">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <span class="spacer"></span>
-            <span class="user-greeting" *ngIf="user$ | async as userObj">Olá, {{userObj.user.name.split(' ')[0]}}</span>
-            <button mat-icon-button (click)="logout()">
-                <mat-icon>logout</mat-icon>
-            </button>
-        </mat-toolbar>
+    <mat-drawer-content class="flex flex-col h-screen overflow-hidden bg-gray-50!">
 
-        <main class="main-content-area">
+        @if (!drawer.opened) {
+        <button mat-icon-button class="absolute top-2 left-2 z-10 bg-white! shadow-md rounded-full"
+            (click)="toggleDrawer(drawer)">
+            <mat-icon class="text-lg! text-gray-600!">chevron_right</mat-icon>
+        </button>
+        }
+
+        <main class="flex-1 overflow-y-auto">
             <router-outlet></router-outlet>
         </main>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+
+        <app-footer></app-footer>
+    </mat-drawer-content>
+
+</mat-drawer-container>

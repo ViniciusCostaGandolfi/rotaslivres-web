@@ -1,55 +1,224 @@
-<div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+@if (isLoading) {
+<div class="flex justify-center items-center h-screen">
     <mat-spinner diameter="50"></mat-spinner>
+    <span class="ml-4 text-gray-600">Enviando roteirização e aguardando solução...</span>
 </div>
+}
 
-<div *ngIf="!isLoading" class="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
+@if (!isLoading && !vrpResult) {
+<div class="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
 
     <header
-        class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-4 border-b border-gray-200">
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-gray-200">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">Nova Rota</h1>
+            <h1 class="text-3xl font-bold text-gray-800">Nova Roteirização</h1>
             <p class="text-md text-gray-500">
-                Importe os dados para roteirização
+                Configure os parâmetros e importe a tabela de clientes (CSV)
             </p>
         </div>
         <button mat-stroked-button (click)="downloadTemplate()">
             <mat-icon>download</mat-icon>
-            Baixar Modelo
+            Baixar Modelo CSV
         </button>
     </header>
 
-    <main class="space-y-8">
-        <section class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold text-red-700 mb-4">1. Enviar Arquivo Excel</h2>
+    <main class="space-y-6">
+        <section class="bg-white p-6 rounded-lg shadow-sm border">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">1. Configurações da Rota</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Volume Máx por Rota (Litros)</label>
+                    <input type="number" [(ngModel)]="maxRouteVolume"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Peso Máx por Rota (Kg)</label>
+                    <input type="number" [(ngModel)]="maxRouteWeight"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Distância Máx por Rota (Metros)</label>
+                    <input type="number" [(ngModel)]="maxRouteDistance"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Entregas Máx por Veículo</label>
+                    <input type="number" [(ngModel)]="maxRouteDeliveries"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+
+                <div class="col-span-1 md:col-span-2 pt-2 border-t mt-2">
+                    <h3 class="text-md text-gray-700 mb-2 font-bold!">Endereço de Origem</h3>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">CEP</label>
+                  <input type="text" [(ngModel)]="originCep"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Rua</label>
+                  <input type="text" [(ngModel)]="originStreet"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Número</label>
+                  <input type="text" [(ngModel)]="originNumber"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Bairro</label>
+                  <input type="text" [(ngModel)]="originNeighborhood"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Cidade</label>
+                  <input type="text" [(ngModel)]="originCity"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Estado (UF)</label>
+                  <input type="text" [(ngModel)]="originState"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Latitude Origem</label>
+                    <input type="number" step="0.000001" [(ngModel)]="originLat"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Longitude Origem</label>
+                    <input type="number" step="0.000001" [(ngModel)]="originLng"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-6 rounded-lg shadow-sm border">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">2. Enviar Arquivo de Clientes (.csv)</h2>
 
             <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors duration-300"
-                [class.bg-red-50]="isDragging" [class.border-red-400]="isDragging" (dragover)="onDragOver($event)"
+                [class.bg-gray-100]="isDragging" [class.border-blue-400]="isDragging" (dragover)="onDragOver($event)"
                 (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
 
-                <mat-icon class="scale-150 text-red-400">cloud_upload</mat-icon>
-                <p class="mt-2 text-gray-600">Arraste e solte o arquivo .xlsx aqui</p>
+                <mat-icon class="scale-150 text-gray-400">cloud_upload</mat-icon>
+                <p class="mt-2 text-gray-600">Arraste e solte o arquivo CSV aqui</p>
                 <p class="text-sm text-gray-500">ou clique para selecionar</p>
-                <input type="file" #fileInput class="hidden" (change)="onFileSelected($event)" accept=".xlsx">
+                <input type="file" #fileInput class="hidden" (change)="onFileSelected($event)" accept=".csv">
             </div>
-
-            <div *ngIf="uploadedFile" class="mt-4 p-3 bg-red-100 text-red-800 rounded-md flex items-center gap-3">
+            @if (uploadedFile) {
+            <div class="mt-4 p-3 bg-blue-50 text-blue-800 rounded-md flex items-center gap-3">
                 <mat-icon>check_circle</mat-icon>
-                <span>Arquivo carregado: <span class="font-semibold">{{ uploadedFile.name }}</span></span>
+                <span>Arquivo carregado: <span class="font-semibold">{{ uploadedFile.name }}</span> ({{ vrpClients.length
+                    }} clientes processados)</span>
             </div>
+            }
         </section>
 
-        <section *ngIf="isProcessingFile" class="bg-white p-6 rounded-lg shadow-md">
-            <div class="flex justify-center items-center py-8">
-                <mat-spinner diameter="40"></mat-spinner>
-                <span class="ml-4 text-gray-600">Processando o arquivo...</span>
+        <!-- Tabela de Clientes -->
+        @if (vrpClients.length > 0) {
+        <section class="bg-white rounded-lg shadow-sm border overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">3. Clientes Carregados</h2>
+                <span class="text-sm bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full">{{ vrpClients.length
+                    }} cliente(s)</span>
             </div>
+
+            <div class="overflow-x-auto">
+                <table mat-table [dataSource]="dataSource" matSort class="w-full">
+
+                    <!-- Coluna Index -->
+                    <ng-container matColumnDef="index">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> #
+                        </th>
+                        <td mat-cell *matCellDef="let client; let i = index" class="text-gray-500 text-sm"> {{ i + 1 }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Coluna CEP -->
+                    <ng-container matColumnDef="postalCode">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> CEP </th>
+                        <td mat-cell *matCellDef="let client" class="font-mono text-sm"> {{ client.address.postalCode }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Coluna Cidade -->
+                    <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> Cidade </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.city }} - {{
+                            client.address.state }} </td>
+                    </ng-container>
+
+                    <!-- Coluna Rua -->
+                    <ng-container matColumnDef="streetName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> Rua </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm max-w-xs truncate"
+                            [matTooltip]="client.address.streetName"> {{ client.address.streetName }} </td>
+                    </ng-container>
+
+                    <!-- Coluna Número -->
+                    <ng-container matColumnDef="streetNumber">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> Nº
+                        </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.streetNumber }} </td>
+                    </ng-container>
+
+                    <!-- Coluna Bairro -->
+                    <ng-container matColumnDef="neighborhood">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> Bairro </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.neighborhood }} </td>
+                    </ng-container>
+
+                    <!-- Coluna Volume -->
+                    <ng-container matColumnDef="volumeLiters">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> Volume (L) </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm text-blue-700 font-semibold"> {{
+                            client.volumeLiters | number:'1.1-1' }} L </td>
+                    </ng-container>
+
+                    <!-- Coluna Peso -->
+                    <ng-container matColumnDef="weightKg">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> Peso (Kg) </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm text-gray-700"> {{ client.weightKg |
+                            number:'1.1-1' }} Kg </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        class="hover:bg-blue-50 transition-colors"></tr>
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons
+                class="border-t border-gray-100"></mat-paginator>
         </section>
+        }
 
         <footer class="flex justify-end pt-4">
-            <button mat-flat-button color="warn" [disabled]="!uploadedFile || isProcessingFile" (click)="validate()">
-                <mat-icon>check</mat-icon>
-                Validar e Iniciar Rota
+            <button mat-flat-button color="primary" class="bg-blue-600 text-white"
+                [disabled]="!uploadedFile || isLoading || vrpClients.length === 0" (click)="submitVrp()">
+                <mat-icon>play_arrow</mat-icon>
+                Processar Roteirização
             </button>
         </footer>
     </main>
 </div>
+}
+
+@if (!isLoading && vrpResult) {
+<div class="min-h-screen">
+    <header class="p-4 bg-white shadow-sm flex justify-between items-center z-10 relative">
+        <h2 class="text-xl font-bold text-gray-800">Resultado da Roteirização</h2>
+        <button mat-stroked-button color="warn" (click)="resetForm()">
+            <mat-icon>arrow_back</mat-icon>
+            Voltar e Refazer
+        </button>
+    </header>
+    <!-- Render the Map VRP module component -->
+    <app-map-vrp [vrp]="vrpResult"></app-map-vrp>
+</div>
+}

@@ -10,9 +10,14 @@ export const usuarioRoutes: AdminRoute[] = [
     href: '/admin'
   },
   {
-    title: 'Rotas',
+    title: 'Minhas Roteirizações',
     icon: 'route',
-    href: '/admin/rotas'
+    href: '/admin/roterizacao'
+  },
+  {
+    title: 'Nova Roteirização',
+    icon: 'add_road',
+    href: '/admin/roterizacao/nova'
   },
   {
     title: 'Meu Perfil',
@@ -22,13 +27,13 @@ export const usuarioRoutes: AdminRoute[] = [
 ];
 
 const adminRoutes: AdminRoute[] = [
-  ...usuarioRoutes.slice(0, 2),
+  ...usuarioRoutes.slice(0, 3),
   {
     title: 'Usuários',
     icon: 'group',
     href: '/admin/usuarios'
   },
-  ...usuarioRoutes.slice(2),
+  ...usuarioRoutes.slice(3),
   {
     title: 'Configurações',
     icon: 'settings',

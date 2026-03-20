@@ -1,59 +1,83 @@
-<div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+<div *ngIf="isLoading" class="flex justify-center flex-col items-center h-screen bg-gray-50">
     <mat-spinner diameter="50"></mat-spinner>
+    <p class="mt-4 text-gray-500 font-medium tracking-wide animate-pulse">Buscando Roteirização no Servidor...</p>
 </div>
 
-<div *ngIf="hasError" class="p-8 text-center text-red-600">
-    <mat-icon class="scale-150 mb-4">error_outline</mat-icon>
-    <h2 class="text-xl">Erro ao carregar a rota</h2>
-    <button mat-button color="warn" (click)="goBack()">Voltar</button>
+<div *ngIf="hasError" class="flex flex-col justify-center items-center h-screen bg-gray-50 text-red-600 p-6">
+    <mat-icon class="text-6xl mb-4">error_outline</mat-icon>
+    <h2 class="text-2xl font-bold mb-2">Ops! Ocorreu um problema</h2>
+    <p class="mb-6 max-w-md text-center text-gray-600 whitespace-pre-wrap">{{ errorMessage }}</p>
+
+    <div *ngIf="solutionMeta" class="mb-6 p-4 bg-white rounded-lg shadow border border-gray-200 w-full max-w-lg">
+        <h3 class="text-gray-800 font-bold mb-2">Informações da Tentativa</h3>
+        <p class="text-sm text-gray-500">ID: {{ solutionMeta.id }}</p>
+        <p class="text-sm text-gray-500">Status: {{ solutionMeta.solverStatus }}</p>
+        <p class="text-sm text-gray-500" *ngIf="solutionMeta.createdAt">Criado em: {{ solutionMeta.createdAt |
+            date:'short' }}</p>
+    </div>
+
+    <button mat-flat-button color="warn" class="px-8 rounded-full shadow-lg" (click)="goBack()">Voltar para a
+        Lista</button>
 </div>
 
-<div *ngIf="!isLoading && !hasError" class="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
-    <header class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
-        <div class="flex items-center gap-4">
-            <button mat-icon-button (click)="goBack()">
+<div *ngIf="!isLoading && !hasError" class="flex flex-col h-screen overflow-hidden">
+
+    <header class="h-14 flex items-center justify-between px-4 bg-white border-b border-gray-200 z-20 shadow-sm">
+        <div class="flex items-center gap-3">
+            <button mat-icon-button (click)="goBack()" matTooltip="Voltar">
                 <mat-icon>arrow_back</mat-icon>
             </button>
-            <div>
-                <h1 class="text-3xl font-bold text-gray-800">Detalhes da Rota</h1>
-                <p class="text-sm text-gray-500">Visualização do resultado do processamento</p>
-            </div>
+            <h1 class="text-lg font-bold text-gray-800">
+                Roteirização #{{ solutionMeta?.id }}
+                <span class="ml-2 py-0.5 px-2 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">
+                    {{ solutionMeta?.solverStatus }}
+                </span>
+            </h1>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button mat-stroked-button color="primary" (click)="retry()"
+                [disabled]="solutionMeta?.solverStatus === 'PENDING' || solutionMeta?.solverStatus === 'RUNNING'">
+                <mat-icon>replay</mat-icon>
+                Reprocessar
+            </button>
         </div>
     </header>
 
-    <main class="bg-white p-6 rounded-lg shadow-md">
-        <table mat-table [dataSource]="dataSource" class="w-full">
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Nome </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
+    <div class="flex flex-1 overflow-hidden relative">
 
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let element">
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold"
-                        [ngClass]="element.status === 'COMPLETE' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'">
-                        {{element.status}}
-                    </span>
-                </td>
-            </ng-container>
+        <!-- Área do Mapa -->
+        <main class="flex-1 relative bg-gray-100">
+            <app-map-vrp *ngIf="solutionMeta?.outputPath && vrpResult" 
+                [vrp]="vrpResult"
+                [solutionMeta]="solutionMeta"
+                class="block w-full h-full"></app-map-vrp>
 
-            <ng-container matColumnDef="duration">
-                <th mat-header-cell *matHeaderCellDef> Duração Estimada </th>
-                <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
-            </ng-container>
+            <div *ngIf="!solutionMeta?.outputPath && solutionMeta?.solverStatus !== 'ERROR'"
+                class="absolute inset-0 flex flex-col items-center justify-center bg-white/50 backdrop-blur-sm">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p class="mt-4 font-medium text-gray-600">
+                    {{ (solutionMeta?.solverStatus === 'RUNNING' || solutionMeta?.solverStatus === 'PENDING') ?
+                    'Processando roteirização...' : 'Aguardando resultados do servidor...' }}
+                </p>
+                <p class="text-xs text-gray-400 mt-2">O mapa aparecerá assim que a solução for concluída.</p>
+            </div>
 
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> Ações </th>
-                <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="warn">
-                        <mat-icon>visibility</mat-icon>
+            <div *ngIf="solutionMeta?.solverStatus === 'ERROR'"
+                class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-white/80 backdrop-blur-sm">
+                <mat-icon class="text-red-500 text-5xl mb-2">warning</mat-icon>
+                <h3 class="text-xl font-bold text-gray-800">Falha no Processamento</h3>
+                <p class="text-gray-500 max-w-sm mb-4">
+                    {{ solutionMeta?.errorMessage || 'O algoritmo não conseguiu encontrar uma solução.'}}
+                </p>
+                <div class="flex gap-3">
+                    <button mat-flat-button color="primary" (click)="retry()">
+                        <mat-icon>replay</mat-icon>
+                        Tentar Novamente
                     </button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </main>
+                    <button mat-stroked-button color="warn" (click)="goBack()">Voltar para a lista</button>
+                </div>
+            </div>
+        </main>
+    </div>
 </div>

@@ -1,0 +1,179 @@
+<mat-drawer-container class="h-full w-full">
+  <mat-drawer #drawer class="w-80" mode="side" position="start">
+    <div class="p-4 overflow-y-auto h-full">
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Resumo da Roteirização</h3>
+
+      <!-- Métricas -->
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 flex flex-col">
+          <span class="text-[10px] text-gray-500 uppercase font-bold">Distância</span>
+          <span class="text-sm font-bold text-gray-900">{{ (totalDistance / 1000) | number:'1.1-1' }} km</span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 flex flex-col">
+          <span class="text-[10px] text-gray-500 uppercase font-bold">Peso</span>
+          <span class="text-sm font-bold text-gray-900">{{ totalWeight | number:'1.0-0' }} kg</span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 flex flex-col">
+          <span class="text-[10px] text-gray-500 uppercase font-bold">Volume</span>
+          <span class="text-sm font-bold text-gray-900">{{ totalVolume | number:'1.0-0' }} L</span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 flex flex-col">
+          <span class="text-[10px] text-gray-500 uppercase font-bold">Entregas</span>
+          <span class="text-sm font-bold text-gray-900">{{ totalClients }} pts</span>
+        </div>
+      </div>
+
+      <!-- Alerta de Não Atendidos -->
+      <div *ngIf="unassignedCount > 0"
+        class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg flex items-center gap-2">
+        <mat-icon class="text-red-500 scale-75">warning</mat-icon>
+        <div class="text-xs font-bold text-red-700">{{ unassignedCount }} não atendidos</div>
+      </div>
+
+      <mat-divider class="mb-4"></mat-divider>
+
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Rotas Geradas</h3>
+      @for (route of vrp.routes; track route.id; let i = $index) {
+      <div
+        class="mb-4 p-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:border-primary-300 transition-colors">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <div [ngStyle]="{'background-color': colormap[i]}" class="w-3 h-3 rounded-full"></div>
+            <strong class="text-sm">Rota {{ i + 1 }}</strong>
+          </div>
+          <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full text-gray-500">{{ route.clients.length }}
+            entregas</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-1 text-[11px] text-gray-600 mb-3">
+          <span>📏 {{ (route.distanceMeters || 0).toFixed(0) }}m</span>
+          <span>📦 {{ (((route.volumeLiters || 0) / 45) * 100) | number: '1.0-0' }}% cheio</span>
+        </div>
+
+        <div class="flex gap-2">
+          <button mat-stroked-button color="primary" class="h-8! text-[11px]! flex-1"
+            (click)="onRouteButtonClick(route)">
+            Mapa
+          </button>
+          <a mat-stroked-button color="primary" class="h-8! text-[11px]! flex-1" [href]="route.linkGoogleMaps"
+            target="_blank">
+            GMaps
+          </a>
+        </div>
+
+        <mat-expansion-panel class="mt-2 shadow-none! border! border-gray-100!">
+          <mat-expansion-panel-header class="h-8! px-2!">
+            <span class="text-[10px] font-medium">Lista de Entregas</span>
+          </mat-expansion-panel-header>
+          <div class="pt-2">
+            @for (client of route.clients; track client.id; let j = $index) {
+            <div class="text-[10px] mb-2 p-1.5 bg-gray-50 rounded border-l-2 border-primary-400">
+              <div class="font-bold flex justify-between">
+                <span>Entrega {{j+1}}</span>
+                <span>{{ (client.volumeLiters || 0).toFixed(1) }} L</span>
+              </div>
+              <div class="text-gray-500 truncate">{{ client.address.formattedAddress }}</div>
+            </div>
+            }
+          </div>
+        </mat-expansion-panel>
+      </div>
+      }
+
+      <mat-divider class="my-4"></mat-divider>
+
+      <!-- Detalhes Técnicos -->
+      <mat-expansion-panel class="shadow-none! border! border-gray-100!">
+        <mat-expansion-panel-header>
+          <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Detalhes Técnicos</span>
+        </mat-expansion-panel-header>
+        <div class="py-2 flex flex-col gap-3">
+          <div class="flex flex-col">
+            <span class="text-[10px] text-gray-400">Status</span>
+            <span class="text-xs font-medium">{{ solutionMeta?.solverStatus }}</span>
+          </div>
+          <div class="flex flex-col" *ngIf="solutionMeta?.createdAt">
+            <span class="text-[10px] text-gray-400">Criado em</span>
+            <span class="text-xs font-medium">{{ solutionMeta?.createdAt | date:'short' }}</span>
+          </div>
+          <div class="flex flex-col" *ngIf="solutionMeta?.durationMillis">
+            <span class="text-[10px] text-gray-400">Tempo</span>
+            <span class="text-xs font-medium">{{ (solutionMeta?.durationMillis || 0) / 1000 | number:'1.1-2' }}s</span>
+          </div>
+          <div class="flex flex-col" *ngIf="solutionMeta?.modelName">
+            <span class="text-[10px] text-gray-400">Modelo</span>
+            <span class="text-xs truncate font-medium">{{ solutionMeta?.modelName }}</span>
+          </div>
+
+          <div *ngIf="solutionMeta?.errorMessage"
+            class="p-2 bg-red-50 border border-red-100 rounded text-[10px] text-red-600 italic">
+            <strong>Erro:</strong> {{ solutionMeta?.errorMessage }}
+          </div>
+
+          <a *ngIf="solutionMeta?.outputPath" [href]="solutionMeta?.outputPath" mat-flat-button color="primary"
+            class="w-full h-8! text-[11px]!">
+            <mat-icon class="scale-75">download</mat-icon>
+            Baixar JSON Completo
+          </a>
+        </div>
+      </mat-expansion-panel>
+
+      <div class="h-8"></div> <!-- Spacer -->
+    </div>
+  </mat-drawer>
+
+  @if (vrp && showMap) {
+  <div class="relative w-full" style="height: 100%;">
+    <mgl-map [mapStyle]="{
+          version: 8,
+          sources: {
+            'osm-tiles': {
+              type: 'raster',
+              tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+              tileSize: 256
+            }
+          },
+          layers: [{
+            id: 'osm-tiles-layer',
+            type: 'raster',
+            source: 'osm-tiles'
+          }]
+        }" [zoom]="[13]" [center]="center" class="relative" style="height: 100%; width: 100%;">
+
+
+
+      <mgl-control mglNavigation position="top-right"></mgl-control>
+      <mgl-control mglFullscreen position="top-right"></mgl-control>
+      <mgl-control position="top-left">
+        <button mat-mini-fab color="primary" class="m-2 shadow-md bg-white!" (click)="drawer.toggle()"
+          matTooltip="Abrir Menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mgl-control>
+
+
+      @for (route of vrp.routes; track route.id; let i = $index) {
+      <app-map-vrp-route [color]="colormap[i]" [route]="route"></app-map-vrp-route>
+      }
+
+      <app-map-vrp-merchant [base]="vrp.origin"></app-map-vrp-merchant>
+
+      @if (selectedRoute) {
+      <mgl-popup [lngLat]="center">
+        <div>
+          <h3>Rota ID: {{ selectedRoute.id }}</h3>
+          <p>Distancia: {{ (selectedRoute.distanceMeters || 0).toFixed(2) }} metros</p>
+          <p>Volume: {{ (selectedRoute.volumeLiters || 0).toFixed(2) }} litros</p>
+          <a class="w-full" mat-raised-button color="primary" [href]="selectedRoute.linkGoogleMaps" target="_blank"
+            rel="noopener noreferrer">
+            Link Maps
+          </a>
+
+        </div>
+      </mgl-popup>
+      }
+
+    </mgl-map>
+  </div>
+  }
+</mat-drawer-container>

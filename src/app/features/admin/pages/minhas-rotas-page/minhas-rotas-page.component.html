@@ -1,0 +1,86 @@
+<div class="h-full bg-slate-50 p-6 sm:p-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Minhas Roteirizações</h1>
+    <p class="text-sm text-slate-500 mt-1">Histórico de roteirizações solicitadas.</p>
+  </div>
+
+  <mat-card class="shadow-sm border border-slate-200/60 rounded-xl overflow-hidden">
+    <mat-card-content class="p-0">
+      <div class="overflow-x-auto relative min-h-[200px]">
+
+        <!-- Loading Overlay -->
+        <div *ngIf="isLoading()"
+          class="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex items-center justify-center">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="w-full">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-slate-600 bg-slate-50/80">ID</th>
+            <td mat-cell *matCellDef="let element" class="text-slate-700">#{{element.id}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-slate-600 bg-slate-50/80">Status</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full" [ngClass]="{
+                        'bg-blue-100 text-blue-700': element.solverStatus === 'PENDING',
+                        'bg-amber-100 text-amber-700': element.solverStatus === 'RUNNING',
+                        'bg-emerald-100 text-emerald-700': element.solverStatus === 'OPTIMAL' || element.solverStatus === 'FEASIBLE',
+                        'bg-red-100 text-red-700': element.solverStatus === 'ERROR' || element.solverStatus === 'TIMEOUT' || element.solverStatus === 'INFEASIBLE'
+                      }">
+                  {{ translateStatus(element.solverStatus) }}
+                </span>
+                @if (element.solverStatus === 'RUNNING') {
+                <mat-spinner diameter="16"></mat-spinner>
+                }
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-slate-600 bg-slate-50/80">Data de Solicitação
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-slate-700">
+              {{element.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef class="font-medium text-slate-600 bg-slate-50/80">Duração</th>
+            <td mat-cell *matCellDef="let element" class="text-slate-700">
+              {{ element.durationMillis ? (element.durationMillis / 1000 | number:'1.0-2') + 's' : '-' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef
+              class="font-medium text-slate-600 bg-slate-50/80 whitespace-nowrap text-right!">Ações</th>
+            <td mat-cell *matCellDef="let element" class="whitespace-nowrap text-right">
+              <button mat-icon-button color="primary" matTooltip="Ver Detalhes" [routerLink]="[element.id]">
+                <mat-icon>description</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Excluir" (click)="deleteRoute(element.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50/50 transition-colors">
+          </tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell p-8! text-center text-slate-500" [attr.colspan]="displayedColumns.length">
+              <div class="flex flex-col items-center justify-center">
+                <mat-icon class="text-slate-400 mb-2 w-12! h-12! text-[48px]">route</mat-icon>
+                Nenhuma rota solicitada ainda.
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

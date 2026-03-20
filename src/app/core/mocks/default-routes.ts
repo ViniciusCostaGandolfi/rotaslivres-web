@@ -5,14 +5,19 @@ export const mockDefaultRoutes = [
         scrollTo: "home-services-section"
     },
     {
-        title: "Contato & Preço",
+        title: "Contato & Apoio",
         href: "/",
-        scrollTo: "home-pricing-section"
+        scrollTo: "home-contact-section"
     },
     {
         title: "Sobre",
         href: "/",
         scrollTo: "home-about-us-section"
+    },
+    {
+        title: "Vídeos",
+        href: "/",
+        scrollTo: "home-videos-section"
     }
     
 ]

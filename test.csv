@@ -1,0 +1,6 @@
+volume_litros;peso_kg;cep;rua;numero;bairro;cidade;uf;latitude;longitude
+15.5;12.0;13480-001;Praça Toledo Barros;1;Centro;Limeira;SP;-22.5647;-47.4022
+22.0;35.4;13480-631;Rua Tiradentes;500;Centro;Limeira;SP;-22.5621;-47.4068
+10.2;8.5;13010-001;Rua Treze de Maio;100;Centro;Campinas;SP;-22.9056;-47.0608
+45.0;110.0;01311-200;Avenida Paulista;1000;Bela Vista;São Paulo;SP;-23.5641;-46.6523
+8.0;15.0;13465-000;Rua Fernando Camargo;250;Centro;Americana;SP;-22.7392;-47.3315

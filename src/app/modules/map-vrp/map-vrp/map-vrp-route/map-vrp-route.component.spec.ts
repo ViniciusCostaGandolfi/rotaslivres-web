@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NovaSolucaoPageComponent } from './nova-solucao-page.component';
+import { MapVrpRouteComponent } from './map-vrp-route.component';
 
-describe('NovaSolucaoPageComponent', () => {
-  let component: NovaSolucaoPageComponent;
-  let fixture: ComponentFixture<NovaSolucaoPageComponent>;
+describe('MapVrpRouteComponent', () => {
+  let component: MapVrpRouteComponent;
+  let fixture: ComponentFixture<MapVrpRouteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NovaSolucaoPageComponent]
+      imports: [MapVrpRouteComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(NovaSolucaoPageComponent);
+    fixture = TestBed.createComponent(MapVrpRouteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

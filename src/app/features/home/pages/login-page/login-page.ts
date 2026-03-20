@@ -47,8 +47,7 @@ export class LoginPage {
           this.router.navigate(['/admin']);
         },
         error: (error) => {
-          console.error('Erro ao realizar login:', error);
-          const errorMessage = error?.error?.detail || 'Erro ao realizar login. Tente novamente.';
+          const errorMessage = error?.error?.message || 'Erro ao realizar login. Tente novamente.';
           this.snackbar.open(errorMessage, 'Fechar', { duration: 8000 });
           this.isLoading = false;
         }

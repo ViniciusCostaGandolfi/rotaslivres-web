@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { AdminRoute } from '../../../../core/interfaces/admin-route';
 import { getRoutes } from '../../../../core/mocks/admin-routes';
 import { Observable, Subscription } from 'rxjs';
 import { TokenUserDto } from '../../../../core/interfaces/auth';
+import { FooterComponent } from '../../../../shared/footer/footer.component';
 
 @Component({
   selector: 'app-admin-layout',
@@ -22,7 +23,8 @@ import { TokenUserDto } from '../../../../core/interfaces/auth';
     MatToolbarModule,
     MatListModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    FooterComponent
   ],
   templateUrl: './admin-layout.html',
   styleUrl: './admin-layout.css'
@@ -43,8 +45,6 @@ export class AdminLayout implements OnInit, OnDestroy {
     this.userSub = this.user$.subscribe(user => {
       if (user && user.user) {
         this.routes = getRoutes(user.user);
-      } else {
-        // If not logged in, wait or redirect - AuthGuard usually handles redirect
       }
     });
   }
@@ -59,4 +59,9 @@ export class AdminLayout implements OnInit, OnDestroy {
     this.currentUserService.logout();
     this.router.navigate(['/login']);
   }
+
+  toggleDrawer(drawer: MatDrawer): void {
+    drawer.toggle();
+  }
 }
+

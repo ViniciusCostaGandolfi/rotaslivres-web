@@ -51,15 +51,14 @@ export class SiginPage {
 
       this.isLoading = true;
       this.authService.createUser(this.form.value as UserCreation).subscribe({
-        next: (response) => {
-          const tokenResponse = response;
-          console.log(tokenResponse)
+        next: () => {
+          this.snackbar.open('Conta criada com sucesso!', 'Fechar', { duration: 3000 });
           this.isLoading = false;
           this.router.navigate(['/admin']);
         },
         error: (error) => {
-          console.error('Error:', error);
-          this.snackbar.open(error.error.detail, 'Fechar', { duration: 3000 });
+          const errorMessage = error?.error?.message || 'Erro ao criar conta. Tente novamente.';
+          this.snackbar.open(errorMessage, 'Fechar', { duration: 8000 });
           this.isLoading = false;
         }
       });

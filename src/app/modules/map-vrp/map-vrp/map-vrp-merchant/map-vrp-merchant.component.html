@@ -1,0 +1,12 @@
+<mgl-marker #markerMerchant [lngLat]="point">
+    <div class="flex flex-col items-center">
+        <img *ngIf="!hasError" class="marker w-[30px] h-[30px]" src="images/icons/merchant-icon.png"  alt="Merchant"
+             (error)="onError()"/>
+        <div *ngIf="hasError" class="w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-md"></div>
+    </div>
+</mgl-marker>
+<mgl-popup [marker]="markerMerchant">
+    <strong>Nome:</strong> Seu Nome <br/>
+    <strong>CNPJ:</strong> CNPJ<br/>
+    <strong>Endereço:</strong> {{base.address.formattedAddress}}<br/>
+</mgl-popup>

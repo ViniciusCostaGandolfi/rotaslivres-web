@@ -1,0 +1,19 @@
+<mgl-geojson-source [id]="'oneline-' + route.id">
+    <mgl-feature [geometry]="geometry"> </mgl-feature>
+</mgl-geojson-source>
+<mgl-layer
+    [id]="'route' + route.id"
+    type="line"
+    [source]="'oneline-' + route.id"
+    [layout]="{
+        'line-join': 'round',
+        'line-cap': 'round'
+    }"
+    [paint]="paint"
+>
+</mgl-layer>
+
+
+@for (client of route.clients; track client.id) {
+    <app-map-vrp-order [order]="client"></app-map-vrp-order>
+}
