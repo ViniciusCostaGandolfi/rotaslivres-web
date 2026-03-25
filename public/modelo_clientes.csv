@@ -1,0 +1,4 @@
+volume_litros;peso_kg;cep;rua;numero;bairro;cidade;uf;latitude;longitude
+5.0;15.0;13480-123;Rua Exemplo;100;Centro;Limeira;SP;-22.56;-47.40
+10.5;25.0;13480-010;Rua Santa Cruz;120;Centro;Limeira;SP;-22.564121;-47.400512
+8.2;15.5;13484-015;Avenida Fabrício Vampré;450;Jardim São Paulo;Limeira;SP;-22.578543;-47.412087

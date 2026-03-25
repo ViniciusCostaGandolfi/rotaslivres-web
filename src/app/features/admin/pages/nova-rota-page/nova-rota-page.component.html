@@ -16,10 +16,20 @@
                 Configure os parâmetros e importe a tabela de clientes (CSV)
             </p>
         </div>
-        <button mat-stroked-button (click)="downloadClientTemplate()">
-            <mat-icon>download</mat-icon>
-            Baixar Modelo Padrão Clientes
-        </button>
+        <div class="flex gap-2 flex-wrap">
+            <a mat-stroked-button href="/modelo_clientes.csv" download="modelo_clientes.csv">
+                <mat-icon>download</mat-icon>
+                Modelo Clientes CSV
+            </a>
+            <a mat-stroked-button href="/modelo_frota.csv" download="modelo_frota.csv">
+                <mat-icon>download</mat-icon>
+                Modelo Frota CSV
+            </a>
+            <a mat-stroked-button href="/exemplo_funcional.csv" download="exemplo_funcional.csv">
+                <mat-icon>download</mat-icon>
+                Exemplo Funcional CSV
+            </a>
+        </div>
     </header>
 
     <main class="space-y-6">
@@ -88,9 +98,9 @@
                   </button>
                   <input type="file" #vehicleFileInput class="hidden" (change)="onVehicleFileSelected($event)" accept=".csv">
                   
-                  <button mat-stroked-button class="ml-2" (click)="downloadVehicleTemplate()">
+                  <a mat-stroked-button class="ml-2" href="/modelo_frota.csv" download="modelo_frota.csv">
                     <mat-icon>download</mat-icon> Modelo Frota CSV
-                  </button>
+                  </a>
                </div>
                
                <button mat-stroked-button color="accent" class="border-dashed" (click)="addVehicle()">
@@ -189,9 +199,9 @@
                   </button>
                   <input type="file" #clientFileInput class="hidden" (change)="onFileSelected($event)" accept=".csv">
                   
-                  <button mat-stroked-button class="ml-2" (click)="downloadClientTemplate()">
+                  <a mat-stroked-button class="ml-2" href="/modelo_clientes.csv" download="modelo_clientes.csv">
                     <mat-icon>download</mat-icon> Modelo Clientes CSV
-                  </button>
+                  </a>
                </div>
             </div>
             @if (uploadedFile) {
@@ -327,10 +337,12 @@
         <footer class="flex justify-between items-center pt-4">
             <span class="text-sm text-gray-500 italic flex items-center gap-1">
                <mat-icon class="text-gray-400" style="font-size: 18px; width: 18px; height: 18px;">info</mat-icon>
-               O Oquestrador Java se encarregará de completar eventuais latitudes que não validou.
+               Todos os endereços precisam ser validados antes de enviar a roteirização.
             </span>
             <button mat-flat-button color="primary" class="bg-blue-600 text-white"
-                [disabled]="!uploadedFile || isLoading || vrpClients.length === 0" (click)="submitVrp()">
+                [disabled]="!uploadedFile || isLoading || vrpClients.length === 0 || hasMissingGeo()"
+                [matTooltip]="hasMissingGeo() ? 'Valide todos os endereços antes de prosseguir' : ''"
+                (click)="submitVrp()">
                 <mat-icon>play_arrow</mat-icon>
                 Processar Roteirização
             </button>

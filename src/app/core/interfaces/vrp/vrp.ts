@@ -32,13 +32,13 @@ export interface ClientDto {
 export interface VehicleTypeDto {
   id?: string;
   name: string;
-  maxVolumeLiters: number;
-  maxWeightKg: number;
-  maxDeliveries: number;
-  maxDistanceMeters: number;
+  maxVolumeLiters: number | null;
+  maxWeightKg: number | null;
+  maxDeliveries: number | null;
+  maxDistanceMeters: number | null;
   minRoutes: number;
-  maxRoutes: number;
-  targetProportion: number;
+  maxRoutes: number | null;
+  targetProportion: number | null;
   fixedCost: number;
 }
 
