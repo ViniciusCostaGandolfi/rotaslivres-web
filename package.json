@@ -35,7 +35,6 @@
     "@angular/router": "^21.1.0",
     "@angular/ssr": "^21.1.1",
     "@maplibre/ngx-maplibre-gl": "^21.0.2",
-    "@swimlane/ngx-datatable": "^22.0.0",
     "colormap": "^2.3.2",
     "express": "^5.1.0",
     "jwt-decode": "^4.0.0",
