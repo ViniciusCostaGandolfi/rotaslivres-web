@@ -31,21 +31,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="w-full" (input)="formatPhone()">
-            <mat-label>Telefone</mat-label>
-            <input class="w-full" matInput type="text" formControlName="phone">
 
-            @if (form.get('phone')?.hasError('required')) {
-            <mat-error>
-                Telefone é obrigatório.
-            </mat-error>
-            }
-            @else if (form.get('phone')?.hasError('pattern')) {
-            <mat-error>
-                Formato inválido. Use (00) 00000-0000.
-            </mat-error>
-            }
-        </mat-form-field>
 
         <mat-form-field appearance="fill" class="w-full">
             <mat-label>Senha</mat-label>

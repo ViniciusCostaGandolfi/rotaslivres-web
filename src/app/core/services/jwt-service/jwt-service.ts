@@ -11,15 +11,15 @@ export class JwtService {
 
   saveToken(token: string): void {
     // Save token with 14 days expiration (assuming same as backend)
-    this.cookieService.set(environment.GRADEHORARIOS_TOKEN, token, 14, '/');
+    this.cookieService.set(environment.ROTASLIVRES_TOKEN, token, 14, '/');
   }
 
   deleteToken(): void {
-    this.cookieService.delete(environment.GRADEHORARIOS_TOKEN, '/');
+    this.cookieService.delete(environment.ROTASLIVRES_TOKEN, '/');
   }
 
   getToken(): string {
-    return this.cookieService.get(environment.GRADEHORARIOS_TOKEN) ?? '';
+    return this.cookieService.get(environment.ROTASLIVRES_TOKEN) ?? '';
   }
 
   getExp(): number {

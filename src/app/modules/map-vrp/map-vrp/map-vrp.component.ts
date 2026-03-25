@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import createColormap from 'colormap';
-import { FullMerchantDto } from '../../../core/interfaces/vrp/vrp';
+import { FullMerchantDto, ClientDto } from '../../../core/interfaces/vrp/vrp';
 import { Vrp, VrpRoute, SolutionDto } from '../../../core/interfaces/vrp/vrp';
 
 
@@ -70,6 +70,12 @@ export class MapVrpComponent implements OnInit {
     const midPoint = this.selectedRoute.routeLine[Math.ceil(this.selectedRoute.routeLine.length / 2)];
     if (midPoint && midPoint.lng != null && midPoint.lat != null) {
       this.center = [midPoint.lng, midPoint.lat];
+    }
+  }
+
+  onUnassignedClientClick(client: ClientDto) {
+    if (client.address.longitude != null && client.address.latitude != null) {
+      this.center = [client.address.longitude, client.address.latitude];
     }
   }
 

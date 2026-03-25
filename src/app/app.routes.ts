@@ -3,6 +3,8 @@ import { DefaultLayoutComponent } from './shared/default-layout/default-layout.c
 import { HomePage } from './features/home/pages/home-page/home-page';
 import { LoginPage } from './features/home/pages/login-page/login-page';
 import { SiginPage } from './features/home/pages/sigin-page/sigin-page';
+import { ForgotPasswordPage } from './features/home/pages/forgot-password-page/forgot-password-page';
+import { ResetPasswordPage } from './features/home/pages/reset-password-page/reset-password-page';
 import { NotFoundPage } from './shared/not-found-page/not-found-page';
 import { AdminPage } from './features/admin/pages/admin-page/admin-page';
 import { AdminLayout } from './features/admin/components/admin-layout/admin-layout';
@@ -30,6 +32,16 @@ export const routes: Routes = [
                 path: 'sigin',
                 component: SiginPage,
                 title: 'Rotas Livres - Cadastrar'
+            },
+            {
+                path: 'resetar-password',
+                component: ForgotPasswordPage,
+                title: 'Rotas Livres - Recuperar Senha'
+            },
+            {
+                path: 'reset-password',
+                component: ResetPasswordPage,
+                title: 'Rotas Livres - Nova Senha'
             }
         ]
     },

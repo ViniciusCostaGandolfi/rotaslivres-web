@@ -28,10 +28,7 @@ export class SiginPage {
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl<string>('', Validators.required),
     confirmPassword: new FormControl<string>('', Validators.required),
-    phone: new FormControl<string>('', [
-      Validators.required,
-      Validators.pattern(/^\(\d{2}\) \d{5}-\d{4}$/)
-    ]),
+
   }, { validators: passwordMatchValidator })
 
 
@@ -74,23 +71,5 @@ export class SiginPage {
     setTimeout(() => this.isLoading = false, 1000);
   }
 
-  formatPhone() {
-    let value = this.form.get('phone')?.value || '';
 
-    value = value.replace(/\D/g, '');
-
-    value = value.substring(0, 11);
-
-    if (value.length > 0) {
-      if (value.length <= 2) {
-        value = `(${value}`;
-      } else if (value.length <= 7) {
-        value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-      } else {
-        value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
-      }
-    }
-
-    this.form.get('phone')?.setValue(value, { emitEvent: false });
-  }
 }

@@ -16,94 +16,183 @@
                 Configure os parâmetros e importe a tabela de clientes (CSV)
             </p>
         </div>
-        <button mat-stroked-button (click)="downloadTemplate()">
+        <button mat-stroked-button (click)="downloadClientTemplate()">
             <mat-icon>download</mat-icon>
-            Baixar Modelo CSV
+            Baixar Modelo Padrão Clientes
         </button>
     </header>
 
     <main class="space-y-6">
         <section class="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">1. Configurações da Rota</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Volume Máx por Rota (Litros)</label>
-                    <input type="number" [(ngModel)]="maxRouteVolume"
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">1. Endereço de Origem (Base)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="col-span-1 lg:col-span-1">
+                    <label class="block text-sm font-medium text-gray-700">CEP</label>
+                    <div class="flex mt-1">
+                        <input type="text" [(ngModel)]="originCep" placeholder="00000-000"
+                            class="block w-full rounded-none rounded-l-md border-gray-300 shadow-sm p-2 border border-r-0 focus:ring focus:ring-opacity-50">
+                        <button mat-flat-button color="accent" class="rounded-l-none" style="height: 42px; border-radius: 0 0.375rem 0.375rem 0;" (click)="searchOriginCep()" [disabled]="!originCep" matTooltip="Autocompletar Endereço via ViaCEP">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Rua</label>
+                    <input type="text" [(ngModel)]="originStreet"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Peso Máx por Rota (Kg)</label>
-                    <input type="number" [(ngModel)]="maxRouteWeight"
+                    <label class="block text-sm font-medium text-gray-700">Número</label>
+                    <input type="text" [(ngModel)]="originNumber"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Distância Máx por Rota (Metros)</label>
-                    <input type="number" [(ngModel)]="maxRouteDistance"
+                    <label class="block text-sm font-medium text-gray-700">Bairro</label>
+                    <input type="text" [(ngModel)]="originNeighborhood"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Entregas Máx por Veículo</label>
-                    <input type="number" [(ngModel)]="maxRouteDeliveries"
+                    <label class="block text-sm font-medium text-gray-700">Cidade</label>
+                    <input type="text" [(ngModel)]="originCity"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Estado (UF)</label>
+                    <input type="text" [(ngModel)]="originState"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                </div>
+                <div class="lg:col-span-1 flex items-end">
+                    <button mat-stroked-button color="primary" class="w-full" style="height: 42px;" (click)="validateOriginAddress()" [disabled]="!originStreet || !originCity">
+                        <mat-icon>my_location</mat-icon> Validar Lat/Lng
+                    </button>
                 </div>
 
-                <div class="col-span-1 md:col-span-2 pt-2 border-t mt-2">
-                    <h3 class="text-md text-gray-700 mb-2 font-bold!">Endereço de Origem</h3>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Latitude</label>
+                    <input type="number" step="0.000001" [(ngModel)]="originLat" disabled class="mt-1 fill-gray-200 block w-full cursor-not-allowed bg-gray-100 rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">CEP</label>
-                  <input type="text" [(ngModel)]="originCep"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Rua</label>
-                  <input type="text" [(ngModel)]="originStreet"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Número</label>
-                  <input type="text" [(ngModel)]="originNumber"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Bairro</label>
-                  <input type="text" [(ngModel)]="originNeighborhood"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Cidade</label>
-                  <input type="text" [(ngModel)]="originCity"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Estado (UF)</label>
-                  <input type="text" [(ngModel)]="originState"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Latitude Origem</label>
-                    <input type="number" step="0.000001" [(ngModel)]="originLat"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Longitude Origem</label>
-                    <input type="number" step="0.000001" [(ngModel)]="originLng"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
+                    <label class="block text-sm font-medium text-gray-700">Longitude</label>
+                    <input type="number" step="0.000001" [(ngModel)]="originLng" disabled class="mt-1 fill-gray-200 block w-full cursor-not-allowed bg-gray-100 rounded-md border-gray-300 shadow-sm p-2 border focus:ring focus:ring-opacity-50">
                 </div>
             </div>
         </section>
 
         <section class="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">2. Enviar Arquivo de Clientes (.csv)</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">2. Frota de Veículos</h2>
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+               <div>
+                  <button mat-flat-button color="primary" (click)="vehicleFileInput.click()">
+                    <mat-icon>upload_file</mat-icon> Importar Frota (CSV)
+                  </button>
+                  <input type="file" #vehicleFileInput class="hidden" (change)="onVehicleFileSelected($event)" accept=".csv">
+                  
+                  <button mat-stroked-button class="ml-2" (click)="downloadVehicleTemplate()">
+                    <mat-icon>download</mat-icon> Modelo Frota CSV
+                  </button>
+               </div>
+               
+               <button mat-stroked-button color="accent" class="border-dashed" (click)="addVehicle()">
+                   <mat-icon>add</mat-icon> Adicionar Veículo Manualmente
+               </button>
+            </div>
 
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors duration-300"
-                [class.bg-gray-100]="isDragging" [class.border-blue-400]="isDragging" (dragover)="onDragOver($event)"
-                (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
+            <!-- Tabela de Veículos Editável -->
+            <div class="overflow-x-auto border rounded-md">
+                <table mat-table [dataSource]="vehicleDataSource" class="w-full">
+               
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase min-w-[150px]"> Nome </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                            <input [(ngModel)]="v.name" class="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
 
-                <mat-icon class="scale-150 text-gray-400">cloud_upload</mat-icon>
-                <p class="mt-2 text-gray-600">Arraste e solte o arquivo CSV aqui</p>
-                <p class="text-sm text-gray-500">ou clique para selecionar</p>
-                <input type="file" #fileInput class="hidden" (change)="onFileSelected($event)" accept=".csv">
+                    <ng-container matColumnDef="volume">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> Volume (L) </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.maxVolumeLiters" class="w-20 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="weight">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> Peso (Kg) </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.maxWeightKg" class="w-20 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deliveries">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase whitespace-nowrap"> Max Paradas </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.maxDeliveries" class="w-20 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="distance">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase whitespace-nowrap"> Max Distância </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.maxDistanceMeters" class="w-24 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="minRoutes">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase whitespace-nowrap"> Min Rotas </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.minRoutes" class="w-16 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="maxRoutes">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase whitespace-nowrap"> Max Rotas </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.maxRoutes" class="w-16 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="targetProportion">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase whitespace-nowrap" matTooltip="0.0 a 1.0"> Prop. Alvo </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" step="0.1" [(ngModel)]="v.targetProportion" class="w-16 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" /> 
+                        </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="fixedCost">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase whitespace-nowrap"> Custo Fixo </th>
+                        <td mat-cell *matCellDef="let v" class="pr-2"> 
+                             <input type="number" [(ngModel)]="v.fixedCost" class="w-20 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm text-green-700 font-bold" /> 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let v; let i = index">
+                            <button mat-icon-button color="warn" (click)="removeVehicle(i)" *ngIf="vehicles.length > 1">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedVehicleColumns" class="bg-gray-100"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedVehicleColumns;" class="hover:bg-blue-50 transition-colors"></tr>
+                </table>
+            </div>
+        </section>
+
+        <section class="bg-white p-6 rounded-lg shadow-sm border">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">3. Importar Clientes (CSV)</h2>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+               <div>
+                  <button mat-flat-button color="primary" (click)="clientFileInput.click()">
+                    <mat-icon>upload_file</mat-icon> Enviar Clientes (CSV)
+                  </button>
+                  <input type="file" #clientFileInput class="hidden" (change)="onFileSelected($event)" accept=".csv">
+                  
+                  <button mat-stroked-button class="ml-2" (click)="downloadClientTemplate()">
+                    <mat-icon>download</mat-icon> Modelo Clientes CSV
+                  </button>
+               </div>
             </div>
             @if (uploadedFile) {
             <div class="mt-4 p-3 bg-blue-50 text-blue-800 rounded-md flex items-center gap-3">
@@ -117,10 +206,18 @@
         <!-- Tabela de Clientes -->
         @if (vrpClients.length > 0) {
         <section class="bg-white rounded-lg shadow-sm border overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-700">3. Clientes Carregados</h2>
-                <span class="text-sm bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full">{{ vrpClients.length
-                    }} cliente(s)</span>
+            <div class="px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <h2 class="text-xl font-semibold text-gray-700">3. Clientes Carregados</h2>
+                    <span class="text-sm bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full">{{ vrpClients.length
+                        }} cliente(s)</span>
+                </div>
+                
+                @if (hasMissingGeo()) {
+                <button mat-flat-button color="accent" (click)="validateAddresses()">
+                    <mat-icon>location_on</mat-icon> Validar Localizações Faltantes
+                </button>
+                }
             </div>
 
             <div class="overflow-x-auto">
@@ -134,6 +231,17 @@
                         </td>
                     </ng-container>
 
+                    <!-- Coluna GeoStatus -->
+                    <ng-container matColumnDef="geoStatus">
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase">
+                          Status
+                        </th>
+                        <td mat-cell *matCellDef="let client">
+                          <mat-icon class="text-green-500" *ngIf="client.address.latitude && client.address.latitude !== 0" matTooltip="Geolocalização Validada">check_circle</mat-icon>
+                          <mat-icon class="text-yellow-500" *ngIf="!client.address.latitude || client.address.latitude === 0" matTooltip="Sem Coordenadas Precisas">warning</mat-icon>
+                        </td>
+                    </ng-container>
+
                     <!-- Coluna CEP -->
                     <ng-container matColumnDef="postalCode">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header
@@ -142,12 +250,18 @@
                         </td>
                     </ng-container>
 
+                    <!-- Coluna Estado -->
+                    <ng-container matColumnDef="state">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="text-xs font-semibold text-gray-500 uppercase"> UF </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.state }} </td>
+                    </ng-container>
+
                     <!-- Coluna Cidade -->
                     <ng-container matColumnDef="city">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header
                             class="text-xs font-semibold text-gray-500 uppercase"> Cidade </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.city }} - {{
-                            client.address.state }} </td>
+                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.city }} </td>
                     </ng-container>
 
                     <!-- Coluna Rua -->
@@ -188,6 +302,18 @@
                             number:'1.1-1' }} Kg </td>
                     </ng-container>
 
+                    <!-- Coluna Lat -->
+                    <ng-container matColumnDef="latitude">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Lat </th>
+                        <td mat-cell *matCellDef="let client" class="text-xs text-gray-400 font-mono"> {{ client.address.latitude ? (client.address.latitude | number:'1.5-5') : '-' }} </td>
+                    </ng-container>
+
+                    <!-- Coluna Lng -->
+                    <ng-container matColumnDef="longitude">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Lng </th>
+                        <td mat-cell *matCellDef="let client" class="text-xs text-gray-400 font-mono"> {{ client.address.longitude ? (client.address.longitude | number:'1.5-5') : '-' }} </td>
+                    </ng-container>
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         class="hover:bg-blue-50 transition-colors"></tr>
@@ -198,7 +324,11 @@
         </section>
         }
 
-        <footer class="flex justify-end pt-4">
+        <footer class="flex justify-between items-center pt-4">
+            <span class="text-sm text-gray-500 italic flex items-center gap-1">
+               <mat-icon class="text-gray-400" style="font-size: 18px; width: 18px; height: 18px;">info</mat-icon>
+               O Oquestrador Java se encarregará de completar eventuais latitudes que não validou.
+            </span>
             <button mat-flat-button color="primary" class="bg-blue-600 text-white"
                 [disabled]="!uploadedFile || isLoading || vrpClients.length === 0" (click)="submitVrp()">
                 <mat-icon>play_arrow</mat-icon>

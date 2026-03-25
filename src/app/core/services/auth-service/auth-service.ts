@@ -58,15 +58,14 @@ export class AuthService {
   }
 
 
-  requestPasswordReset(email: string): Observable<string> {
-    const url = `${this.apiUrl}/api/auth/forgot_password`;
-    return this.http.post(url, { email }, { responseType: 'text' });
+  requestPasswordReset(email: string): Observable<any> {
+    const url = `${this.apiUrl}/api/auth/forgot-password`;
+    return this.http.post(url, { email });
   }
 
-
-  resetPassword(payload: { token: string, newPassword: string }): Observable<string> {
-    const url = `${this.apiUrl}/api/auth/reset_password`;
-    return this.http.post(url, payload, { responseType: 'text' });
+  resetPassword(payload: { token: string, newPassword: string }): Observable<any> {
+    const url = `${this.apiUrl}/api/auth/reset-password`;
+    return this.http.post(url, payload);
   }
 
 

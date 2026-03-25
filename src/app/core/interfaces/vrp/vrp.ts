@@ -29,14 +29,26 @@ export interface ClientDto {
   address: AddressDto;
 }
 
+export interface VehicleTypeDto {
+  id?: string;
+  name: string;
+  maxVolumeLiters: number;
+  maxWeightKg: number;
+  maxDeliveries: number;
+  maxDistanceMeters: number;
+  minRoutes: number;
+  maxRoutes: number;
+  targetProportion: number;
+  fixedCost: number;
+}
+
 export interface VrpIn {
   id?: string;
   origin: OriginDto;
   clients: ClientDto[];
-  maxRouteVolume: number;
-  maxRouteDistance: number;
-  maxRouteWeight: number;
-  maxRouteDeliveries: number;
+  vehicles: VehicleTypeDto[];
+  forceRouteCount?: number;
+  maxRouteDistance?: number;
   createdAt?: string;
 }
 
@@ -45,6 +57,8 @@ export interface VrpRoute {
   distanceMeters: number;
   volumeLiters: number;
   weightKg: number;
+  vehicleId?: string;
+  vehicleName?: string;
   clients: ClientDto[];
   // routeLine expects an array of LngLatLike pairs: [lng, lat] (or lat/lng as object depending on LngLatLike mapping in maplibre)
   // map-vrp.component uses routeLine[i] as a LngLatLike object if I see center assignment, or it's just [lng, lat]
