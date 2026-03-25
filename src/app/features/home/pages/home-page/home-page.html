@@ -25,7 +25,7 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
             <button routerLink="/sigin" mat-flat-button color="primary"
-              class="py-8! px-10! text-lg! rounded-2xl! bg-red-600! !hover:bg-red-700 transition-all! shadow-2xl! shadow-red-200!">
+              class="py-8! px-10! text-lg! rounded-2xl! bg-red-600! hover:bg-red-700! transition-all! shadow-2xl! shadow-red-200!">
               Acessar plataforma de pesquisa
             </button>
             <button routerLink="/login" mat-stroked-button
@@ -127,71 +127,19 @@
       </div>
     </div>
   </section>
-
-  <section id="home-videos-section" class="py-24 bg-white relative overflow-hidden">
-    <div
-      class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-red-50 rounded-full blur-3xl opacity-40">
-    </div>
-    <div class="container mx-auto px-6 relative z-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-black text-slate-900 mb-4">Conheça o Projeto e Aprenda a Utilizar</h2>
-        <p class="text-slate-600 max-w-2xl mx-auto">Nossa pesquisa na UNICAMP busca democratizar o acesso à logística de
-          alta performance. Assista aos vídeos abaixo para entender nossa missão e como aproveitar a plataforma ao
-          máximo.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <!-- Video Card 1 -->
-        <a href="https://www.youtube.com/watch?v=VIDEO_ID_1" target="_blank"
-          class="block group relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100 aspect-video bg-slate-100">
-          <img src="https://images.unsplash.com/photo-1517245318773-b7b83d91273e?auto=format&fit=crop&q=80&w=800"
-            alt="Sobre o Projeto"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
-          <div
-            class="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-colors flex items-center justify-center">
-            <div
-              class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-              <mat-icon class="text-red-600 text-4xl!">play_arrow</mat-icon>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-8 bg-linear-to-t from-slate-900/80 to-transparent">
-            <h3 class="text-white text-2xl font-bold">Sobre o Projeto Rotas Livres</h3>
-            <p class="text-white/80">Conheça nossa missão, impacto social e o papel da UNICAMP.</p>
-          </div>
-        </a>
-        <!-- Video Card 2 -->
-        <a href="https://www.youtube.com/watch?v=VIDEO_ID_2" target="_blank"
-          class="block group relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100 aspect-video bg-slate-100">
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
-            alt="Tutorial de Uso"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
-          <div
-            class="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-colors flex items-center justify-center">
-            <div
-              class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-              <mat-icon class="text-red-600 text-4xl!">play_arrow</mat-icon>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-8 bg-linear-to-t from-slate-900/80 to-transparent">
-            <h3 class="text-white text-2xl font-bold">Tutorial: Como Utilizar a Plataforma</h3>
-            <p class="text-white/80">Guia passo a passo para otimizar sua primeira roteirização.</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
   <section id="home-services-section" class="py-24 bg-slate-50">
     <div class="container mx-auto px-6 text-center">
       <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-16">Simples como preencher uma tabela</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
-        <div
-          class="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-red-200 hover:shadow-2xl transition-all">
+        <a href="/exemplo_funcional.csv" download
+          class="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-red-200 hover:shadow-2xl transition-all block">
           <div class="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-8">
             <mat-icon class="text-3xl!">file_download</mat-icon>
           </div>
           <h3 class="text-xl font-bold mb-4">1. Baixe o Modelo</h3>
           <p class="text-slate-600 leading-relaxed">Suba sua lista de endereços em segundos usando nosso Excel padrão.
           </p>
-        </div>
+        </a>
         <div
           class="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-red-200 hover:shadow-2xl transition-all">
           <div

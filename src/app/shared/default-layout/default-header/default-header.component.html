@@ -29,10 +29,11 @@
       <div class="flex items-center gap-4 border-l pl-8"
         [ngClass]="(hasScrolled || !isHome) ? 'border-slate-200' : 'border-slate-300/50'">
 
-        <button routerLink="login" matButton="elevated" color="primary">
+        <button routerLink="login" mat-stroked-button
+          [ngClass]="(hasScrolled || !isHome) ? 'text-slate-700 border-slate-300' : 'text-slate-800 border-white/30'">
           Entrar
         </button>
-        <button routerLink="sigin" matButton="elevated" color="primary">
+        <button routerLink="sigin" mat-flat-button color="primary">
           Cadastre-se
         </button>
       </div>
@@ -53,10 +54,10 @@
       }
       <mat-divider class="my-2!"></mat-divider>
       <div class="p-4 flex flex-col gap-3">
-        <button routerLink="login" matButton="elevated" color="primary">
+        <button routerLink="login" mat-stroked-button class="w-full">
           Entrar
         </button>
-        <button routerLink="sigin" matButton="elevated" color="primary">
+        <button routerLink="sigin" mat-flat-button color="primary" class="w-full">
           Cadastre-se
         </button>
       </div>
