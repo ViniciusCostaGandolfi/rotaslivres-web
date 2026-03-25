@@ -31,6 +31,14 @@
             </mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Telefone</mat-label>
+            <input class="w-full" matInput type="tel" formControlName="telefone">
+            <mat-error *ngIf="form.controls['telefone'].hasError('required')">
+                Você esqueceu de colocar um telefone para contato
+            </mat-error>
+        </mat-form-field>
+
 
 
         <mat-form-field appearance="fill" class="w-full">

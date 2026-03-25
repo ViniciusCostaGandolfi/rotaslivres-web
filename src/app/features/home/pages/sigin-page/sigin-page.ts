@@ -26,6 +26,7 @@ export class SiginPage {
   form = new FormGroup({
     name: new FormControl<string>('', Validators.required),
     email: new FormControl<string>('', [Validators.required, Validators.email]),
+    telefone: new FormControl<string>('', Validators.required),
     password: new FormControl<string>('', Validators.required),
     confirmPassword: new FormControl<string>('', Validators.required),
 

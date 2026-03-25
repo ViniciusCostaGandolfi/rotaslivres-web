@@ -8,6 +8,7 @@ export enum RoleUser {
 export interface UserBaseDto {
     name: string;
     email: string;
+    telefone: string;
     role: RoleUser;
 }
 
