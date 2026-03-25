@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NgIf, DecimalPipe, CommonModule } from '@angular/common';
+import { DecimalPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VrpService } from '../../../../core/services/vrp-service/vrp.service';
 import { ClientDto, VrpIn, Vrp, OriginDto, VehicleTypeDto } from '../../../../core/interfaces/vrp/vrp';
@@ -13,6 +13,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-nova-rota-page',
@@ -24,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     DecimalPipe,
     MatProgressSpinner,
     MatButton,
+    MatIconButton,
     MatIcon,
     FormsModule,
     MapVrpModule,
@@ -31,7 +34,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatPaginatorModule,
     MatSortModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCheckboxModule
   ]
 })
 export class NovaRotaPageComponent implements OnInit {
@@ -44,7 +48,11 @@ export class NovaRotaPageComponent implements OnInit {
 
   // Clients Table
   dataSource = new MatTableDataSource<ClientDto>([]);
-  displayedColumns: string[] = ['index', 'geoStatus', 'postalCode', 'state', 'city', 'streetName', 'streetNumber', 'neighborhood', 'volumeLiters', 'weightKg', 'latitude', 'longitude'];
+  displayedColumns: string[] = ['select', 'index', 'geoStatus', 'postalCode', 'state', 'city', 'streetName', 'streetNumber', 'neighborhood', 'volumeLiters', 'weightKg', 'latitude', 'longitude', 'clientActions'];
+
+  // Selection & editing state
+  selection = new SelectionModel<ClientDto>(true, []);
+  editingRows = new Set<string>();
 
   // Vehicles Table
   vehicleDataSource = new MatTableDataSource<VehicleTypeDto>([]);
@@ -124,6 +132,58 @@ export class NovaRotaPageComponent implements OnInit {
       this.vehicles.splice(index, 1);
       this.vehicleDataSource.data = this.vehicles;
     }
+  }
+
+  // ── Client inline-edit & selection helpers ──────────────────────────────
+
+  isEditing(id: string): boolean {
+    return this.editingRows.has(id);
+  }
+
+  startEdit(id: string): void {
+    this.editingRows.add(id);
+  }
+
+  saveEdit(id: string): void {
+    this.editingRows.delete(id);
+    // Refresh formatted address after manual edit
+    const client = this.vrpClients.find(c => c.id === id);
+    if (client) {
+      const a = client.address;
+      a.formattedAddress = `${a.streetName}, ${a.streetNumber} - ${a.neighborhood}, ${a.city} - ${a.state}, ${a.postalCode}`;
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.selection.selected.length === this.vrpClients.length && this.vrpClients.length > 0;
+  }
+
+  toggleAll(): void {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.vrpClients.forEach(c => this.selection.select(c));
+    }
+  }
+
+  deleteSelected(): void {
+    const toDelete = new Set(this.selection.selected.map(c => c.id));
+    this.vrpClients = this.vrpClients.filter(c => !toDelete.has(c.id));
+    this.dataSource.data = this.vrpClients;
+    this.selection.clear();
+    this.snackBar.open(`${toDelete.size} cliente(s) excluído(s).`, 'Fechar', { duration: 3000 });
+    this.cdr.markForCheck();
+  }
+
+  clearAllClients(): void {
+    const count = this.vrpClients.length;
+    this.vrpClients = [];
+    this.dataSource.data = [];
+    this.uploadedFile = null;
+    this.selection.clear();
+    this.editingRows.clear();
+    this.snackBar.open(`${count} cliente(s) removido(s).`, 'Fechar', { duration: 3000 });
+    this.cdr.markForCheck();
   }
 
   // Helper de Endereço via Java Spring OpenCEP

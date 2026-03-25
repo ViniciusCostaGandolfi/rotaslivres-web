@@ -219,113 +219,189 @@
             <div class="px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div class="flex items-center gap-3">
                     <h2 class="text-xl font-semibold text-gray-700">3. Clientes Carregados</h2>
-                    <span class="text-sm bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full">{{ vrpClients.length
-                        }} cliente(s)</span>
+                    <span class="text-sm bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full">{{ vrpClients.length }} cliente(s)</span>
                 </div>
                 
-                @if (hasMissingGeo()) {
-                <button mat-flat-button color="accent" (click)="validateAddresses()">
-                    <mat-icon>location_on</mat-icon> Validar Localizações Faltantes
-                </button>
-                }
+                <div class="flex gap-2 flex-wrap items-center">
+                    <!-- Reimportar CSV (sempre visível) -->
+                    <input type="file" #clientReImportInput class="hidden" (change)="onFileSelected($event)" accept=".csv">
+                    <button mat-stroked-button (click)="clientReImportInput.click()" matTooltip="Substitui todos os clientes atuais pelo novo arquivo">
+                        <mat-icon>upload_file</mat-icon> Reimportar CSV
+                    </button>
+
+                    <!-- Excluir todos (sempre visível) -->
+                    <button mat-stroked-button color="warn" (click)="clearAllClients()" matTooltip="Remove todos os clientes da lista">
+                        <mat-icon>delete_forever</mat-icon> Excluir Todos
+                    </button>
+
+                    @if (selection.hasValue()) {
+                    <button mat-flat-button color="warn" (click)="deleteSelected()">
+                        <mat-icon>delete_sweep</mat-icon> Excluir selecionados ({{ selection.selected.length }})
+                    </button>
+                    }
+                    @if (hasMissingGeo()) {
+                    <button mat-flat-button color="accent" (click)="validateAddresses()">
+                        <mat-icon>location_on</mat-icon> Validar Localizações Faltantes
+                    </button>
+                    }
+                </div>
             </div>
 
             <div class="overflow-x-auto">
                 <table mat-table [dataSource]="dataSource" matSort class="w-full">
 
+                    <!-- Coluna Select -->
+                    <ng-container matColumnDef="select" sticky>
+                        <th mat-header-cell *matHeaderCellDef class="w-10">
+                            <mat-checkbox
+                                [checked]="isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                (change)="toggleAll()"
+                                color="primary">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let client" class="w-10">
+                            <mat-checkbox
+                                [checked]="selection.isSelected(client)"
+                                (change)="selection.toggle(client)"
+                                color="primary">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
                     <!-- Coluna Index -->
                     <ng-container matColumnDef="index">
-                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> #
-                        </th>
-                        <td mat-cell *matCellDef="let client; let i = index" class="text-gray-500 text-sm"> {{ i + 1 }}
-                        </td>
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> #</th>
+                        <td mat-cell *matCellDef="let client; let i = index" class="text-gray-500 text-sm"> {{ i + 1 }}</td>
                     </ng-container>
 
                     <!-- Coluna GeoStatus -->
                     <ng-container matColumnDef="geoStatus">
-                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase">
-                          Status
-                        </th>
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase">Status</th>
                         <td mat-cell *matCellDef="let client">
-                          <mat-icon class="text-green-500" *ngIf="client.address.latitude && client.address.latitude !== 0" matTooltip="Geolocalização Validada">check_circle</mat-icon>
-                          <mat-icon class="text-yellow-500" *ngIf="!client.address.latitude || client.address.latitude === 0" matTooltip="Sem Coordenadas Precisas">warning</mat-icon>
+                            <mat-icon class="text-green-500" *ngIf="client.address.latitude && client.address.latitude !== 0" matTooltip="Geolocalização Validada">check_circle</mat-icon>
+                            <mat-icon class="text-yellow-500" *ngIf="!client.address.latitude || client.address.latitude === 0" matTooltip="Sem Coordenadas Precisas">warning</mat-icon>
                         </td>
                     </ng-container>
 
                     <!-- Coluna CEP -->
                     <ng-container matColumnDef="postalCode">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> CEP </th>
-                        <td mat-cell *matCellDef="let client" class="font-mono text-sm"> {{ client.address.postalCode }}
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> CEP </th>
+                        <td mat-cell *matCellDef="let client" class="font-mono text-sm">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.postalCode }}</span>
+                            <input *ngIf="isEditing(client.id)" [(ngModel)]="client.address.postalCode"
+                                class="w-24 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm font-mono" />
                         </td>
                     </ng-container>
 
                     <!-- Coluna Estado -->
                     <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> UF </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.state }} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> UF </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.state }}</span>
+                            <input *ngIf="isEditing(client.id)" [(ngModel)]="client.address.state"
+                                class="w-10 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm uppercase" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Cidade -->
                     <ng-container matColumnDef="city">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> Cidade </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.city }} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Cidade </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.city }}</span>
+                            <input *ngIf="isEditing(client.id)" [(ngModel)]="client.address.city"
+                                class="w-28 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Rua -->
                     <ng-container matColumnDef="streetName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> Rua </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm max-w-xs truncate"
-                            [matTooltip]="client.address.streetName"> {{ client.address.streetName }} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Rua </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm max-w-xs">
+                            <span *ngIf="!isEditing(client.id)" class="truncate block" [matTooltip]="client.address.streetName">{{ client.address.streetName }}</span>
+                            <input *ngIf="isEditing(client.id)" [(ngModel)]="client.address.streetName"
+                                class="w-36 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Número -->
                     <ng-container matColumnDef="streetNumber">
-                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> Nº
-                        </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.streetNumber }} </td>
+                        <th mat-header-cell *matHeaderCellDef class="text-xs font-semibold text-gray-500 uppercase"> Nº</th>
+                        <td mat-cell *matCellDef="let client" class="text-sm">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.streetNumber }}</span>
+                            <input *ngIf="isEditing(client.id)" [(ngModel)]="client.address.streetNumber"
+                                class="w-16 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Bairro -->
                     <ng-container matColumnDef="neighborhood">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> Bairro </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm"> {{ client.address.neighborhood }} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Bairro </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.neighborhood }}</span>
+                            <input *ngIf="isEditing(client.id)" [(ngModel)]="client.address.neighborhood"
+                                class="w-28 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Volume -->
                     <ng-container matColumnDef="volumeLiters">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> Volume (L) </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm text-blue-700 font-semibold"> {{
-                            client.volumeLiters | number:'1.1-1' }} L </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Volume (L) </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm">
+                            <span *ngIf="!isEditing(client.id)" class="text-blue-700 font-semibold">{{ client.volumeLiters | number:'1.1-1' }} L</span>
+                            <input *ngIf="isEditing(client.id)" type="number" [(ngModel)]="client.volumeLiters"
+                                class="w-20 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm text-blue-700 font-semibold" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Peso -->
                     <ng-container matColumnDef="weightKg">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header
-                            class="text-xs font-semibold text-gray-500 uppercase"> Peso (Kg) </th>
-                        <td mat-cell *matCellDef="let client" class="text-sm text-gray-700"> {{ client.weightKg |
-                            number:'1.1-1' }} Kg </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Peso (Kg) </th>
+                        <td mat-cell *matCellDef="let client" class="text-sm">
+                            <span *ngIf="!isEditing(client.id)" class="text-gray-700">{{ client.weightKg | number:'1.1-1' }} Kg</span>
+                            <input *ngIf="isEditing(client.id)" type="number" [(ngModel)]="client.weightKg"
+                                class="w-20 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-sm text-gray-700" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Lat -->
                     <ng-container matColumnDef="latitude">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Lat </th>
-                        <td mat-cell *matCellDef="let client" class="text-xs text-gray-400 font-mono"> {{ client.address.latitude ? (client.address.latitude | number:'1.5-5') : '-' }} </td>
+                        <td mat-cell *matCellDef="let client" class="text-xs text-gray-400 font-mono">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.latitude ? (client.address.latitude | number:'1.5-5') : '-' }}</span>
+                            <input *ngIf="isEditing(client.id)" type="number" step="0.000001" [(ngModel)]="client.address.latitude"
+                                class="w-24 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-xs font-mono" />
+                        </td>
                     </ng-container>
 
                     <!-- Coluna Lng -->
                     <ng-container matColumnDef="longitude">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-xs font-semibold text-gray-500 uppercase"> Lng </th>
-                        <td mat-cell *matCellDef="let client" class="text-xs text-gray-400 font-mono"> {{ client.address.longitude ? (client.address.longitude | number:'1.5-5') : '-' }} </td>
+                        <td mat-cell *matCellDef="let client" class="text-xs text-gray-400 font-mono">
+                            <span *ngIf="!isEditing(client.id)">{{ client.address.longitude ? (client.address.longitude | number:'1.5-5') : '-' }}</span>
+                            <input *ngIf="isEditing(client.id)" type="number" step="0.000001" [(ngModel)]="client.address.longitude"
+                                class="w-24 bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 py-1 text-xs font-mono" />
+                        </td>
+                    </ng-container>
+
+                    <!-- Coluna Ações -->
+                    <ng-container matColumnDef="clientActions" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef class="w-12"></th>
+                        <td mat-cell *matCellDef="let client">
+                            <button mat-icon-button color="primary" *ngIf="!isEditing(client.id)"
+                                (click)="startEdit(client.id)" matTooltip="Editar linha">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="accent" *ngIf="isEditing(client.id)"
+                                (click)="saveEdit(client.id)" matTooltip="Salvar alterações">
+                                <mat-icon>check_circle</mat-icon>
+                            </button>
+                        </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        [class.bg-blue-50]="selection.isSelected(row)"
                         class="hover:bg-blue-50 transition-colors"></tr>
                 </table>
             </div>
