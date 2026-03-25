@@ -453,7 +453,7 @@ export class NovaRotaPageComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         this.snackBar.open("Roteirização enviada para a fila! Acompanhe em Minhas Rotas.", "Fechar", { duration: 5000 });
-        this.router.navigate(['/admin/roteirizacao']);
+        this.router.navigate(['/admin/roterizacao']);
       },
       error: (err) => {
         console.error('Erro ao enviar VRP:', err);
