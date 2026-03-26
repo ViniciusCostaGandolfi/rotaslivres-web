@@ -48,4 +48,8 @@ export class VrpService {
   fetchVrpJson(url: string): Observable<Vrp> {
     return this.http.get<Vrp>(url);
   }
+
+  fetchVrpInput(url: string): Observable<VrpIn> {
+    return this.http.get<VrpIn>(url);
+  }
 }

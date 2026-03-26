@@ -4,16 +4,18 @@
         <div class="h-14 flex items-center justify-between px-4 border-b border-gray-200">
             <span class="font-extrabold text-xl text-red-600 tracking-wide">Rotas Livres</span>
             <button mat-icon-button class="text-gray-400!" (click)="toggleDrawer(drawer)">
-                <mat-icon class="text-lg!">chevron_left</mat-icon>
+                <mat-icon>chevron_left</mat-icon>
             </button>
         </div>
         <mat-nav-list class="pt-2 h-[calc(100vh-3.5rem)] flex flex-col">
-            <a mat-list-item *ngFor="let route of routes" [routerLink]="route.href"
+            @for (route of routes; track $index) {
+            <a mat-list-item [routerLink]="route.href"
                 routerLinkActive="bg-red-50! border-r-4! border-red-600! text-red-600!"
-                [routerLinkActiveOptions]="{exact: route.href === '/admin'}">
+                [routerLinkActiveOptions]="{exact: true}">
                 <mat-icon matListItemIcon>{{route.icon}}</mat-icon>
                 <div matListItemTitle>{{route.title}}</div>
             </a>
+            }
             <div class="flex-1"></div>
 
             <mat-list-item (click)="logout()"
@@ -27,9 +29,12 @@
     <mat-drawer-content class="flex flex-col h-screen overflow-hidden bg-gray-50!">
 
         @if (!drawer.opened) {
-        <button mat-icon-button class="absolute top-2 left-2 z-10 bg-white! shadow-md rounded-full"
-            (click)="toggleDrawer(drawer)">
-            <mat-icon class="text-lg! text-gray-600!">chevron_right</mat-icon>
+        <button (click)="toggleDrawer(drawer)"
+            class="absolute! top-1 right-2left-0 z-1000! flex h-12 w-5 items-center hover:cursor-pointer justify-center bg-white border border-l-0 border-gray-200 rounded-r-md hover:w-6 hover:bg-gray-50 transition-all group shadow-sm">
+            <mat-icon class="group-hover:text-red-600! text-gray-400!"
+                style="font-size: 20px; width: 20px; height: 20px;">
+                chevron_right
+            </mat-icon>
         </button>
         }
 

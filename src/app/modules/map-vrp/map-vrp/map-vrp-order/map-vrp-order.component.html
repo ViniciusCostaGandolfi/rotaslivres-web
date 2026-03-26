@@ -1,15 +1,15 @@
 <mgl-marker #markerOrder [lngLat]="point">
     <div class="flex flex-col items-center">
-        <img *ngIf="!hasError" class="marker w-[25px] h-[25px]" src="images/icons/customer-icon.png" alt="Order"
-             (error)="onError()"/>
+        <img *ngIf="!hasError" class="marker w-[25px] h-[25px] bg-white rounded-full border"
+            src="images/icons/customer-icon.svg" alt="Order" (error)="onError()" />
         <div *ngIf="hasError" class="w-5 h-5 bg-blue-600 rounded-full border-2 border-white shadow-md"></div>
     </div>
 </mgl-marker>
 
 <mgl-popup [marker]="markerOrder">
-    <strong>OrderID:</strong> {{order.id}}<br/>
-    <strong>Endereço:</strong> {{order.address.formattedAddress}}<br/>
-    <strong>Volume:</strong> {{order.volumeLiters}}<br/>
-    <strong>Lat:</strong> {{order.address.latitude}}<br/> 
-    <strong>Lng:</strong> {{order.address.longitude}}<br/> 
+    <strong>OrderID:</strong> {{order.id}}<br />
+    <strong>Endereço:</strong> {{order.address.formattedAddress}}<br />
+    <strong>Volume:</strong> {{order.volumeLiters}}<br />
+    <strong>Lat:</strong> {{order.address.latitude}}<br />
+    <strong>Lng:</strong> {{order.address.longitude}}<br />
 </mgl-popup>

@@ -1,0 +1,165 @@
+<div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 bg-white">
+    <div class="flex items-center gap-3">
+        <mat-icon class="text-indigo-600! text-[22px]">data_object</mat-icon>
+        <h2 mat-dialog-title class="m-0! text-lg font-bold text-gray-800 tracking-tight">
+            Dados de Entrada
+        </h2>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" class="text-gray-400 hover:text-gray-600">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="p-0! m-1! max-h-[80vh]! overflow-hidden flex flex-col">
+    <mat-tab-group animationDuration="200ms" class="flex-1">
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-2 text-[20px]">place</mat-icon>
+                <span>Origem</span>
+            </ng-template>
+
+            <div class="p-6">
+                <div class="grid grid-cols-2 gap-3" *ngIf="data.origin as o">
+                    <div class="col-span-2 bg-slate-50 border border-slate-200 rounded-sm! p-4 flex flex-col gap-1">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Endereço
+                            Completo</span>
+                        <span class="text-sm text-slate-800 font-semibold">{{ o.address.formattedAddress }}</span>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-sm p-3 flex flex-col gap-1" *ngFor="let item of [
+                 {label: 'Rua', val: o.address.streetName + ', ' + o.address.streetNumber},
+                 {label: 'Bairro', val: o.address.neighborhood || '—'},
+                 {label: 'Cidade / UF', val: o.address.city + ' – ' + o.address.state},
+                 {label: 'CEP', val: o.address.postalCode}
+               ]">
+                        <span
+                            class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{item.label}}</span>
+                        <span class="text-sm text-slate-800 font-medium">{{item.val}}</span>
+                    </div>
+
+                    <div class="col-span-2 bg-indigo-50/50 border border-indigo-100 rounded-sm p-3 flex flex-col gap-1">
+                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Coordenadas
+                            Geográficas</span>
+                        <span class="text-sm font-mono text-indigo-700 font-medium">
+                            {{ o.address.latitude | number:'1.5-5' }}, {{ o.address.longitude | number:'1.5-5' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-2 text-[20px]">groups</mat-icon>
+                <span>Clientes ({{ data.clients.length }})</span>
+            </ng-template>
+
+            <div class="max-h-[60vh] overflow-auto border-t border-gray-100">
+                <table mat-table [dataSource]="data.clients" class="w-full">
+                    <ng-container matColumnDef="index">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4">#</th>
+                        <td mat-cell *matCellDef="let row; let i = index" class="px-4 text-gray-500">{{ i + 1 }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4">Endereço</th>
+                        <td mat-cell *matCellDef="let row"
+                            class="px-4 max-w-[280px] truncate font-medium text-gray-700">
+                            {{ row.address.formattedAddress }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4">Cidade</th>
+                        <td mat-cell *matCellDef="let row" class="px-4 text-gray-600">{{ row.address.city }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="volume">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4 text-right">Vol (L)
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="px-4 text-right font-semibold">{{ row.volumeLiters |
+                            number:'1.0-2' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="weight">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4 text-right">Peso
+                            (kg)</th>
+                        <td mat-cell *matCellDef="let row" class="px-4 text-right font-semibold">{{ row.weightKg |
+                            number:'1.0-2' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="coords">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4">Lat/Lng</th>
+                        <td mat-cell *matCellDef="let row"
+                            class="px-4 font-mono text-[11px] text-indigo-600 whitespace-nowrap">
+                            {{ row.address.latitude | number:'1.4-4' }}, {{ row.address.longitude | number:'1.4-4' }}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="clientsColumns; sticky: true" class="h-10"></tr>
+                    <tr mat-row *matRowDef="let row; columns: clientsColumns;"
+                        class="h-11 hover:bg-slate-50 transition-colors"></tr>
+                </table>
+
+                <div *ngIf="!data.clients.length"
+                    class="flex flex-col items-center justify-center p-12 text-slate-400 italic">
+                    <mat-icon class="mb-2 scale-150">person_off</mat-icon>
+                    <p>Nenhum cliente cadastrado.</p>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-2 text-[20px]">local_shipping</mat-icon>
+                <span>Frota ({{ data.vehicles.length }})</span>
+            </ng-template>
+
+            <div class="max-h-[60vh] overflow-auto border-t border-gray-100">
+                <table mat-table [dataSource]="data.vehicles" class="w-full">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4">Veículo</th>
+                        <td mat-cell *matCellDef="let row" class="px-4 font-bold text-gray-800">{{ row.name }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="volume">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4 text-right">Vol. Máx
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="px-4 text-right text-gray-600">{{ row.maxVolumeLiters
+                            ?? '∞' }} L</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="weight">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4 text-right">Peso Máx
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="px-4 text-right text-gray-600">{{ row.maxWeightKg ??
+                            '∞' }} kg</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cost">
+                        <th mat-header-cell *matHeaderCellDef
+                            class="bg-slate-50! text-[11px] font-bold text-slate-500 uppercase px-4 text-right">Custo
+                            Fixo</th>
+                        <td mat-cell *matCellDef="let row" class="px-4 text-right text-emerald-600 font-medium">R$ {{
+                            row.fixedCost | number:'1.2-2' }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="['name', 'volume', 'weight', 'cost']; sticky: true"
+                        class="h-10"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['name', 'volume', 'weight', 'cost'];"
+                        class="h-11 hover:bg-slate-50 transition-colors"></tr>
+                </table>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>

@@ -109,6 +109,28 @@ export class NovaRotaPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.vehicleDataSource.data = this.vehicles;
+
+    // Pre-populate data when coming from "Rodar Novamente"
+    const state = history.state as { clients?: any[]; vehicles?: any[]; origin?: any };
+    if (state?.clients && state.clients.length > 0) {
+      this.vrpClients = state.clients.map((c: any) => ({ ...c, id: crypto.randomUUID() }));
+      this.dataSource.data = this.vrpClients;
+    }
+    if (state?.vehicles && state.vehicles.length > 0) {
+      this.vehicles = state.vehicles.map((v: any) => ({ ...v, id: crypto.randomUUID() }));
+      this.vehicleDataSource.data = this.vehicles;
+    }
+    if (state?.origin) {
+      const addr = state.origin.address;
+      this.originCep = addr.postalCode ?? this.originCep;
+      this.originStreet = addr.streetName ?? this.originStreet;
+      this.originNumber = addr.streetNumber ?? this.originNumber;
+      this.originNeighborhood = addr.neighborhood ?? this.originNeighborhood;
+      this.originCity = addr.city ?? this.originCity;
+      this.originState = addr.state ?? this.originState;
+      this.originLat = addr.latitude ?? this.originLat;
+      this.originLng = addr.longitude ?? this.originLng;
+    }
   }
 
   addVehicle() {

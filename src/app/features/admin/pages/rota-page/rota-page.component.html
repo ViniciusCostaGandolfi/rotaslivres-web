@@ -36,10 +36,17 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <button mat-stroked-button color="primary" (click)="retry()"
-                [disabled]="solutionMeta?.solverStatus === 'PENDING' || solutionMeta?.solverStatus === 'RUNNING'">
-                <mat-icon>replay</mat-icon>
-                Reprocessar
+            <button mat-flat-button color="accent" (click)="runAgain()"
+                [disabled]="isRunningAgain || !solutionMeta?.inputPath"
+                matTooltip="Criar nova roteirização com os mesmos clientes, veículos e origem">
+                <mat-icon>{{ isRunningAgain ? 'hourglass_empty' : 'play_arrow' }}</mat-icon>
+                {{ isRunningAgain ? 'Carregando...' : 'Rodar Novamente' }}
+            </button>
+
+            <button matButton="outlined" color="accent" (click)="openInputModal()"
+                [disabled]="isRunningAgain || !solutionMeta?.inputPath" matTooltip="Visualizar dados de entrada">
+                <mat-icon>table</mat-icon>
+                Dados
             </button>
         </div>
     </header>
@@ -48,9 +55,7 @@
 
         <!-- Área do Mapa -->
         <main class="flex-1 relative bg-gray-100">
-            <app-map-vrp *ngIf="solutionMeta?.outputPath && vrpResult" 
-                [vrp]="vrpResult"
-                [solutionMeta]="solutionMeta"
+            <app-map-vrp *ngIf="solutionMeta?.outputPath && vrpResult" [vrp]="vrpResult" [solutionMeta]="solutionMeta"
                 class="block w-full h-full"></app-map-vrp>
 
             <div *ngIf="!solutionMeta?.outputPath && solutionMeta?.solverStatus !== 'ERROR'"
