@@ -168,6 +168,10 @@ export class RotaPageComponent implements OnInit, OnDestroy {
     });
   }
 
+  downloadPdf(): void {
+    window.open(this.solutionMeta?.pdfUrl, '_blank');
+  }
+
   runAgain(): void {
     if (!this.solutionMeta?.inputPath) return;
     this.isRunningAgain = true;

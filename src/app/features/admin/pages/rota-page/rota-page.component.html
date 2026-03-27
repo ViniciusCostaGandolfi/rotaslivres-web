@@ -1,7 +1,42 @@
 <div *ngIf="isLoading" class="flex justify-center flex-col items-center h-screen bg-gray-50">
     <mat-spinner diameter="50"></mat-spinner>
-    <p class="mt-4 text-gray-500 font-medium tracking-wide animate-pulse">Buscando Roteirização no Servidor...</p>
+    <p class="mt-4 text-gray-500 font-medium tracking-wide animate-pulse">Carregando...</p>
 </div>
+
+<header class="h-14 flex items-center justify-between px-4 bg-white border-b border-gray-200 z-20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <button mat-icon-button (click)="goBack()" matTooltip="Voltar">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1 class="text-lg font-bold text-gray-800">
+            Roteirização #{{ solutionMeta?.id }}
+            <span class="ml-2 py-0.5 px-2 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">
+                {{ solutionMeta?.solverStatus }}
+            </span>
+        </h1>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <button mat-flat-button color="accent" (click)="runAgain()"
+            [disabled]="isRunningAgain || !solutionMeta?.inputPath"
+            matTooltip="Criar nova roteirização com os mesmos clientes, veículos e origem">
+            <mat-icon>{{ isRunningAgain ? 'hourglass_empty' : 'play_arrow' }}</mat-icon>
+            {{ isRunningAgain ? 'Carregando...' : 'Rodar' }}
+        </button>
+
+        <button matButton="outlined" color="accent" (click)="openInputModal()"
+            [disabled]="isRunningAgain || !solutionMeta?.inputPath" matTooltip="Visualizar dados de entrada">
+            <mat-icon>table</mat-icon>
+            Dados
+        </button>
+
+        <button *ngIf="solutionMeta?.pdfUrl !== null" matButton="outlined" color="accent" (click)="downloadPdf()"
+            [disabled]="isRunningAgain || !solutionMeta?.outputPath" matTooltip="Baixar PDF">
+            <mat-icon>download</mat-icon>
+            PDF
+        </button>
+    </div>
+</header>
 
 <div *ngIf="hasError" class="flex flex-col justify-center items-center h-screen bg-gray-50 text-red-600 p-6">
     <mat-icon class="text-6xl mb-4">error_outline</mat-icon>
@@ -22,34 +57,7 @@
 
 <div *ngIf="!isLoading && !hasError" class="flex flex-col h-screen overflow-hidden">
 
-    <header class="h-14 flex items-center justify-between px-4 bg-white border-b border-gray-200 z-20 shadow-sm">
-        <div class="flex items-center gap-3">
-            <button mat-icon-button (click)="goBack()" matTooltip="Voltar">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-            <h1 class="text-lg font-bold text-gray-800">
-                Roteirização #{{ solutionMeta?.id }}
-                <span class="ml-2 py-0.5 px-2 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">
-                    {{ solutionMeta?.solverStatus }}
-                </span>
-            </h1>
-        </div>
 
-        <div class="flex items-center gap-2">
-            <button mat-flat-button color="accent" (click)="runAgain()"
-                [disabled]="isRunningAgain || !solutionMeta?.inputPath"
-                matTooltip="Criar nova roteirização com os mesmos clientes, veículos e origem">
-                <mat-icon>{{ isRunningAgain ? 'hourglass_empty' : 'play_arrow' }}</mat-icon>
-                {{ isRunningAgain ? 'Carregando...' : 'Rodar Novamente' }}
-            </button>
-
-            <button matButton="outlined" color="accent" (click)="openInputModal()"
-                [disabled]="isRunningAgain || !solutionMeta?.inputPath" matTooltip="Visualizar dados de entrada">
-                <mat-icon>table</mat-icon>
-                Dados
-            </button>
-        </div>
-    </header>
 
     <div class="flex flex-1 overflow-hidden relative">
 
