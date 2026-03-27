@@ -80,6 +80,7 @@ export interface SolutionDto {
   createdAt: string;
   inputPath: string;
   outputPath: string;
+  pdfUrl?: string;
   solverStatus: string;
   durationMillis: number;
   errorMessage?: string;

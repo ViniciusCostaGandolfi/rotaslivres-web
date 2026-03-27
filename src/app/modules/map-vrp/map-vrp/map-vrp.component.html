@@ -137,6 +137,12 @@
             <strong>Erro:</strong> {{ solutionMeta?.errorMessage }}
           </div>
 
+          <a *ngIf="solutionMeta?.pdfUrl" [href]="solutionMeta?.pdfUrl" mat-flat-button color="warn"
+            class="w-full h-8! text-[11px]! mb-2">
+            <mat-icon class="scale-75">picture_as_pdf</mat-icon>
+            Baixar PDF
+          </a>
+
           <a *ngIf="solutionMeta?.outputPath" [href]="solutionMeta?.outputPath" mat-flat-button color="primary"
             class="w-full h-8! text-[11px]!">
             <mat-icon class="scale-75">download</mat-icon>

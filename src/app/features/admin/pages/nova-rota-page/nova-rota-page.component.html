@@ -1,7 +1,7 @@
 @if (isLoading) {
 <div class="flex justify-center items-center h-screen">
     <mat-spinner diameter="50"></mat-spinner>
-    <span class="ml-4 text-gray-600">Enviando roteirização e aguardando solução...</span>
+    <span class="ml-4 text-gray-600">Processando sua roteirização...</span>
 </div>
 }
 
@@ -416,7 +416,7 @@
                Todos os endereços precisam ser validados antes de enviar a roteirização.
             </span>
             <button mat-flat-button color="primary" class="bg-blue-600 text-white"
-                [disabled]="!uploadedFile || isLoading || vrpClients.length === 0 || hasMissingGeo()"
+                [disabled]="(vrpClients.length === 0 && !uploadedFile) || isLoading || hasMissingGeo() || !originLat || !originLng"
                 [matTooltip]="hasMissingGeo() ? 'Valide todos os endereços antes de prosseguir' : ''"
                 (click)="submitVrp()">
                 <mat-icon>play_arrow</mat-icon>
