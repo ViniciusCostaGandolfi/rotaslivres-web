@@ -10,6 +10,9 @@
         'line-cap': 'round'
     }"
     [paint]="paint"
+    (click)="toggleRouteSelection()"
+    (mouseenter)="changeCursor('pointer')"
+    (mouseleave)="changeCursor('')"
 >
 </mgl-layer>
 

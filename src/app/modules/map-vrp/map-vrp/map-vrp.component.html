@@ -157,7 +157,7 @@
 
   @if (vrp && showMap) {
   <div class="relative w-full" style="height: 100%;">
-    <mgl-map [mapStyle]="{
+    <mgl-map #map [mapStyle]="{
           version: 8,
           sources: {
             'osm-tiles': {
@@ -186,7 +186,7 @@
 
 
       @for (route of vrp.routes; track route.id; let i = $index) {
-      <app-map-vrp-route [color]="colormap[i]" [route]="route"></app-map-vrp-route>
+      <app-map-vrp-route [map]="map" [color]="colormap[i]" [route]="route"></app-map-vrp-route>
       }
 
       <app-map-vrp-merchant [base]="vrp.origin"></app-map-vrp-merchant>

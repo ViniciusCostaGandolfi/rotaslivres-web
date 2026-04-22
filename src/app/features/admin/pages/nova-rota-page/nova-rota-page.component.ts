@@ -41,6 +41,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class NovaRotaPageComponent implements OnInit {
 
   isLoading: boolean = false;
+  isLoadingCep: boolean = false;
   isDragging: boolean = false;
   uploadedFile: File | null = null;
   vrpClients: ClientDto[] = [];
@@ -73,6 +74,8 @@ export class NovaRotaPageComponent implements OnInit {
       });
     }
   }
+
+  
 
   // VRP vehicles
   vehicles: VehicleTypeDto[] = [
@@ -212,6 +215,7 @@ export class NovaRotaPageComponent implements OnInit {
   searchOriginCep() {
     const rawCep = this.originCep.replace(/\D/g, '');
     if (rawCep.length === 8) {
+      this.isLoadingCep = true;
       this.vrpService.fetchCepData(rawCep).subscribe({
         next: (data) => {
           if (data && data.streetName) {
@@ -220,6 +224,14 @@ export class NovaRotaPageComponent implements OnInit {
             this.originCity = data.city;
             this.originState = data.state;
           }
+        },
+        error: (err) => {
+          this.snackBar.open('Erro ao buscar CEP. Verifique se o CEP é válido.', 'Fechar', { duration: 3000 });
+          console.error('Erro na busca de CEP:', err);
+        },
+        complete: () => {
+          this.isLoadingCep = false;
+          this.cdr.markForCheck();
         }
       });
     }
@@ -489,5 +501,9 @@ export class NovaRotaPageComponent implements OnInit {
     this.vrpResult = null;
     this.uploadedFile = null;
     this.vrpClients = [];
+  }
+
+  testaModelo() {
+    
   }
 }

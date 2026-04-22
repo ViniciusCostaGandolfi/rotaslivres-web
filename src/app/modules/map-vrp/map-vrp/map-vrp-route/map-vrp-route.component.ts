@@ -1,5 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { CoordinateDto, VrpRoute } from '../../../../core/interfaces/vrp/vrp';
+import { Map } from 'maplibre-gl';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'app-map-vrp-route',
@@ -15,6 +17,9 @@ export class MapVrpRouteComponent implements OnChanges {
 
   @Input() public route!: VrpRoute;
   @Input() public color!: string;
+  @Input() public selected: boolean = false;
+  @Input() public map!: MapComponent;
+  @Output() public routeSelected = new EventEmitter<VrpRoute>();
 
   public paint: any;
 
@@ -40,8 +45,21 @@ export class MapVrpRouteComponent implements OnChanges {
   private updatePaint(): void {
     this.paint = {
         'line-color': this.color,
-        'line-width': 3,
-        'line-opacity': 0.5
+        'line-width': this.selected ? 6 : 3,
+        'line-opacity': this.selected ? 0.8 : 0.5
     };
+  }
+  
+  public toggleRouteSelection(): void {
+    this.selected = !this.selected;
+    this.updatePaint();
+    this.routeSelected.emit(this.route);
+  }
+
+  changeCursor(cursorType: string) {
+    const map = this.map;
+    if (map) {
+      map.mapInstance.getCanvas().style.cursor = cursorType;
+    }
   }
 }
