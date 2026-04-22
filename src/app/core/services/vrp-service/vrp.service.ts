@@ -20,6 +20,10 @@ export class VrpService {
     return this.http.get<SolutionDto>(`${this.apiUrl}/${id}`);
   }
 
+  getPublicSolution(id: string | number): Observable<SolutionDto> {
+    return this.http.get<SolutionDto>(`${this.apiUrl}/public/${id}`);
+  }
+
   createSolution(payload: VrpIn): Observable<any> {
     return this.http.post<any>(this.apiUrl, payload);
   }

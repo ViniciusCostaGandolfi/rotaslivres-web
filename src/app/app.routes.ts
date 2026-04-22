@@ -77,6 +77,11 @@ export const routes: Routes = [
         ]
     },
     {
+        path: ':solutionId/:routeIndex',
+        loadComponent: () => import('./features/home/pages/public-route-page/public-route-page.page').then(m => m.PublicRoutePageComponent),
+        title: 'Rotas Livres - Mapa da Rota'
+    },
+    {
         path: '**',
         component: NotFoundPage
     }
