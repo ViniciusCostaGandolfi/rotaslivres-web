@@ -19,6 +19,7 @@ export class MapVrpComponent implements OnInit {
   public colormap: string[] = [];
   public merchant: FullMerchantDto | null = null;
   public selectedRoute: VrpRoute | null = null;
+  public hoveredRouteId: number | null = null;
 
 
 
@@ -77,6 +78,27 @@ export class MapVrpComponent implements OnInit {
     if (client.address.longitude != null && client.address.latitude != null) {
       this.center = [client.address.longitude, client.address.latitude];
     }
+  }
+
+  onRouteHover(routeId: number | null) {
+    this.hoveredRouteId = routeId;
+  }
+
+  isRouteHighlighted(routeId: number): boolean {
+    if (this.vrp?.routes?.length === 1) return true;
+    return this.hoveredRouteId === routeId || (this.selectedRoute !== null && this.selectedRoute.id === routeId);
+  }
+
+  isRouteDimmed(routeId: number): boolean {
+    if (this.hoveredRouteId === null && this.selectedRoute === null) return false;
+    return !this.isRouteHighlighted(routeId);
+  }
+
+  getPublicRouteUrl(routeIndex: number): string {
+    if (!this.solutionMeta) return '#';
+    // O backend permite acesso público via /api/logistic/vrp/public/{solutionId}
+    // O frontend tem a rota /:solutionId/:routeIndex
+    return `/${this.solutionMeta.id}/${routeIndex}`;
   }
 
   private updateMap(): void {

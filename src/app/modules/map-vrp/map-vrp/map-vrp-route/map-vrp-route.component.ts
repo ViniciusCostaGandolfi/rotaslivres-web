@@ -18,6 +18,8 @@ export class MapVrpRouteComponent implements OnChanges {
   @Input() public route!: VrpRoute;
   @Input() public color!: string;
   @Input() public selected: boolean = false;
+  @Input() public highlighted: boolean = false;
+  @Input() public dimmed: boolean = false;
   @Input() public map!: MapComponent;
   @Output() public routeSelected = new EventEmitter<VrpRoute>();
 
@@ -28,6 +30,9 @@ export class MapVrpRouteComponent implements OnChanges {
         this.updateGeometry();
     }
     if (changes['color'] && this.color) {
+        this.updatePaint();
+    }
+    if (changes['highlighted'] || changes['dimmed'] || changes['selected']) {
         this.updatePaint();
     }
   }
@@ -43,10 +48,21 @@ export class MapVrpRouteComponent implements OnChanges {
   }
 
   private updatePaint(): void {
+    let lineWidth = 4;
+    let lineOpacity = 0.6;
+
+    if (this.highlighted || this.selected) {
+        lineWidth = 8;
+        lineOpacity = 1.0;
+    } else if (this.dimmed) {
+        lineWidth = 2;
+        lineOpacity = 0.15;
+    }
+
     this.paint = {
         'line-color': this.color,
-        'line-width': this.selected ? 6 : 3,
-        'line-opacity': this.selected ? 0.8 : 0.5
+        'line-width': lineWidth,
+        'line-opacity': lineOpacity
     };
   }
   
