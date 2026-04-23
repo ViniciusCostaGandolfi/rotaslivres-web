@@ -1,11 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { CoordinateDto, VrpRoute } from '../../../../core/interfaces/vrp/vrp';
-import { Map } from 'maplibre-gl';
-import { MapComponent } from '@maplibre/ngx-maplibre-gl';
+import { MapComponent, NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
+import { CommonModule } from '@angular/common';
+import { MapVrpOrderComponent } from '../map-vrp-order/map-vrp-order.component';
 
 @Component({
   selector: 'app-map-vrp-route',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, NgxMapLibreGLModule, MapVrpOrderComponent],
   templateUrl: './map-vrp-route.component.html',
   styleUrl: './map-vrp-route.component.scss'
 })
@@ -54,9 +56,6 @@ export class MapVrpRouteComponent implements OnChanges {
     if (this.highlighted || this.selected) {
         lineWidth = 8;
         lineOpacity = 1.0;
-    } else if (this.dimmed) {
-        lineWidth = 2;
-        lineOpacity = 0.15;
     }
 
     this.paint = {

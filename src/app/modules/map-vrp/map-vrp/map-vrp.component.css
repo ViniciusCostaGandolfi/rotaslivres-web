@@ -24,3 +24,24 @@ mgl-map {
   display: flex !important;
   flex-direction: column;
 }
+
+.custom-select-field {
+  width: 100%;
+}
+
+.custom-select-field :deep(.mat-mdc-text-field-wrapper) {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 40px;
+}
+
+.custom-select-field :deep(.mat-mdc-form-field-flex) {
+  height: 40px;
+  align-items: center;
+}
+
+.custom-select-field :deep(.mat-mdc-form-field-infix) {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  min-height: auto;
+}

@@ -1,9 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { VrpOrigin } from '../../../../core/interfaces/vrp/vrp';
 
 @Component({
   selector: 'app-map-vrp-merchant',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, NgxMapLibreGLModule, MatTooltipModule],
   templateUrl: './map-vrp-merchant.component.html',
   styleUrl: './map-vrp-merchant.component.scss'
 })

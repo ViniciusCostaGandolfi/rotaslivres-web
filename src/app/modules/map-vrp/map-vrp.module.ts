@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,16 +15,16 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
-    MapVrpComponent,
-    MapVrpRouteComponent,
-    MapVrpOrderComponent,
-    MapVrpMerchantComponent,
+    // All components are now standalone
   ],
   imports: [
     CommonModule,
+    DecimalPipe,
     RouterModule,
     NgxMapLibreGLModule,
     MatToolbarModule,
@@ -36,12 +36,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatExpansionModule,
     MatTooltipModule,
     MatDividerModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MapVrpComponent,
+    MapVrpRouteComponent,
+    MapVrpMerchantComponent,
+    MapVrpOrderComponent,
   ],
   exports: [
     MapVrpComponent,
     MapVrpRouteComponent,
-    MapVrpOrderComponent,
     MapVrpMerchantComponent,
+    MapVrpOrderComponent,
   ]
 })
 export class MapVrpModule { }

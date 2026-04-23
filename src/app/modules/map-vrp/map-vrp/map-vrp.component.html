@@ -1,7 +1,15 @@
 <mat-drawer-container class="h-full w-full">
   <mat-drawer #drawer class="w-80" mode="side" position="start">
     <div class="p-4 overflow-y-auto h-full">
-      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Resumo da Roteirização</h3>
+      <div class="mb-6">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Resumo e Seleção</h3>
+        <mat-form-field appearance="outline" class="w-full custom-select-field">
+          <mat-select [value]="selectionMode" (selectionChange)="onSelectionModeChange($event.value)">
+            <mat-option value="individual">Seleção Individual</mat-option>
+            <mat-option value="all">Selecionar Todas as Rotas</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
       <!-- Métricas -->
       <div class="grid grid-cols-2 gap-2 mb-4">
@@ -56,9 +64,15 @@
         </div>
 
         <div class="flex gap-2">
-          <a mat-stroked-button color="primary" class="h-8! text-[11px]! flex-1" [routerLink]="['/', solutionMeta?.id, i]"
-            target="_blank">
-            Ver em nova guia
+          <button mat-flat-button [color]="selectedRouteIds.has(route.id) ? 'warn' : 'primary'" 
+            class="h-8! text-[10px]! flex-1" (click)="toggleRoute(route.id); $event.stopPropagation()">
+            <mat-icon class="scale-75">{{ selectedRouteIds.has(route.id) ? 'close' : 'check' }}</mat-icon>
+            {{ selectedRouteIds.has(route.id) ? 'Remover' : 'Selecionar' }}
+          </button>
+          
+          <a mat-stroked-button color="primary" class="h-8! text-[10px]! flex-1 px-1!" [routerLink]="['/', solutionMeta?.id, i]"
+            target="_blank" (click)="$event.stopPropagation()">
+            Visualizar
           </a>
         </div>
 
@@ -188,7 +202,7 @@
       @for (route of vrp.routes; track route.id; let i = $index) {
       <app-map-vrp-route [map]="map" [color]="colormap[i]" [route]="route"
         [highlighted]="isRouteHighlighted(route.id)" [dimmed]="isRouteDimmed(route.id)"
-        [selected]="selectedRoute?.id === route.id"
+        [selected]="selectedRouteIds.has(route.id)"
         (routeSelected)="onRouteButtonClick($event)"></app-map-vrp-route>
       }
 
@@ -200,21 +214,6 @@
           matTooltip="Não atendido: {{ client.volumeLiters | number:'1.0-1'}}L, {{ client.weightKg | number:'1.0-1'}}kg">
         </div>
       </mgl-marker>
-      }
-
-      @if (selectedRoute) {
-      <mgl-popup [lngLat]="center">
-        <div>
-          <h3>Rota ID: {{ selectedRoute.id }}</h3>
-          <p>Distancia: {{ (selectedRoute.distanceMeters || 0).toFixed(2) }} metros</p>
-          <p>Volume: {{ (selectedRoute.volumeLiters || 0).toFixed(2) }} litros</p>
-          <a class="w-full" mat-raised-button color="primary" [routerLink]="['/', solutionMeta?.id, vrp.routes.indexOf(selectedRoute)]" target="_blank"
-            rel="noopener noreferrer">
-            Ver em nova guia
-          </a>
-
-        </div>
-      </mgl-popup>
       }
 
     </mgl-map>
