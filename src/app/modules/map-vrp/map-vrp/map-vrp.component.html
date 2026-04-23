@@ -56,7 +56,7 @@
         </div>
 
         <div class="flex gap-2">
-          <a mat-stroked-button color="primary" class="h-8! text-[11px]! flex-1" [href]="getPublicRouteUrl(i)"
+          <a mat-stroked-button color="primary" class="h-8! text-[11px]! flex-1" [routerLink]="['/', solutionMeta?.id, i]"
             target="_blank">
             Ver em nova guia
           </a>
@@ -187,7 +187,9 @@
 
       @for (route of vrp.routes; track route.id; let i = $index) {
       <app-map-vrp-route [map]="map" [color]="colormap[i]" [route]="route"
-        [highlighted]="isRouteHighlighted(route.id)" [dimmed]="isRouteDimmed(route.id)"></app-map-vrp-route>
+        [highlighted]="isRouteHighlighted(route.id)" [dimmed]="isRouteDimmed(route.id)"
+        [selected]="selectedRoute?.id === route.id"
+        (routeSelected)="onRouteButtonClick($event)"></app-map-vrp-route>
       }
 
       <app-map-vrp-merchant [base]="vrp.origin"></app-map-vrp-merchant>
@@ -206,7 +208,7 @@
           <h3>Rota ID: {{ selectedRoute.id }}</h3>
           <p>Distancia: {{ (selectedRoute.distanceMeters || 0).toFixed(2) }} metros</p>
           <p>Volume: {{ (selectedRoute.volumeLiters || 0).toFixed(2) }} litros</p>
-          <a class="w-full" mat-raised-button color="primary" [href]="getPublicRouteUrl(vrp.routes.indexOf(selectedRoute))" target="_blank"
+          <a class="w-full" mat-raised-button color="primary" [routerLink]="['/', solutionMeta?.id, vrp.routes.indexOf(selectedRoute)]" target="_blank"
             rel="noopener noreferrer">
             Ver em nova guia
           </a>

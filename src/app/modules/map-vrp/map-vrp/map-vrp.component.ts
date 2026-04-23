@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, SimpleChanges,
 import createColormap from 'colormap';
 import { FullMerchantDto, ClientDto } from '../../../core/interfaces/vrp/vrp';
 import { Vrp, VrpRoute, SolutionDto } from '../../../core/interfaces/vrp/vrp';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
+import { LngLatBounds } from 'maplibre-gl';
 
 
 @Component({
@@ -12,6 +14,7 @@ import { Vrp, VrpRoute, SolutionDto } from '../../../core/interfaces/vrp/vrp';
 })
 export class MapVrpComponent implements OnInit {
   @ViewChild('mapContainer') mapContainer!: ElementRef;
+  @ViewChild('map') map!: MapComponent;
 
   public showNav = false;
   public showMap = false
@@ -68,9 +71,24 @@ export class MapVrpComponent implements OnInit {
 
   onRouteButtonClick(route: VrpRoute) {
     this.selectedRoute = route;
-    const midPoint = this.selectedRoute.routeLine[Math.ceil(this.selectedRoute.routeLine.length / 2)];
-    if (midPoint && midPoint.lng != null && midPoint.lat != null) {
-      this.center = [midPoint.lng, midPoint.lat];
+    
+    if (this.selectedRoute.routeLine && this.selectedRoute.routeLine.length > 0) {
+      const bounds = new LngLatBounds();
+      let hasCoords = false;
+      this.selectedRoute.routeLine.forEach(coord => {
+        if (coord.lng != null && coord.lat != null) {
+          bounds.extend([coord.lng, coord.lat]);
+          hasCoords = true;
+        }
+      });
+
+      if (hasCoords && this.map?.mapInstance) {
+        this.map.mapInstance.fitBounds(bounds, {
+          padding: 50,
+          maxZoom: 15,
+          duration: 1000
+        });
+      }
     }
   }
 
@@ -94,12 +112,6 @@ export class MapVrpComponent implements OnInit {
     return !this.isRouteHighlighted(routeId);
   }
 
-  getPublicRouteUrl(routeIndex: number): string {
-    if (!this.solutionMeta) return '#';
-    // O backend permite acesso público via /api/logistic/vrp/public/{solutionId}
-    // O frontend tem a rota /:solutionId/:routeIndex
-    return `/${this.solutionMeta.id}/${routeIndex}`;
-  }
 
   private updateMap(): void {
     // Resetamos o mapa para forçar o re-render
@@ -129,13 +141,16 @@ export class MapVrpComponent implements OnInit {
 
         this.showMap = true;
       } else {
-        console.warn("VRP carregado, mas 'origin.address' está faltando. Verifique a estrutura do JSON.");
-        // Se não tiver origem, tentamos mostrar o mapa mesmo assim centralizando no primeiro ponto
         this.showMap = true;
       }
+      this.cdr.detectChanges();
 
-      this.cdr.detectChanges(); // <--- O PULO DO GATO ESTÁ AQUI
-    }, 300); // Reduzi para 300ms para ser mais rápido
+      if (this.vrp?.routes?.length === 1) {
+        setTimeout(() => {
+          this.onRouteButtonClick(this.vrp.routes[0]);
+        }, 500);
+      }
+    }, 300);
   }
 }
 
