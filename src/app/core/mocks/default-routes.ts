@@ -8,6 +8,10 @@ export const mockDefaultRoutes = [
         title: "Sobre",
         href: "/",
         scrollTo: "home-about-us-section"
+    },
+    {
+        title: "Tutorial",
+        href: "/tutorial"
     }
 ]
 

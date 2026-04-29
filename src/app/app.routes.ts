@@ -42,6 +42,11 @@ export const routes: Routes = [
                 path: 'reset-password',
                 component: ResetPasswordPage,
                 title: 'Rotas Livres - Nova Senha'
+            },
+            {
+                path: 'tutorial',
+                loadComponent: () => import('./features/home/pages/tutorial-page/tutorial-page').then(m => m.TutorialPage),
+                title: 'Rotas Livres - Tutorial'
             }
         ]
     },

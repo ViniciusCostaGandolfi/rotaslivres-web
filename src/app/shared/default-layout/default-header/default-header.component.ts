@@ -62,7 +62,9 @@ export class DefaultHeaderComponent implements OnInit {
     this.isHome = this.router.url === '/' || this.router.url.startsWith('/#');
   }
 
-  scrollToId(id: string) {
-    this.scrollToService.scrollToElementById(id);
+  scrollToId(id: string | undefined) {
+    if (id) {
+      this.scrollToService.scrollToElementById(id);
+    }
   }
 }

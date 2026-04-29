@@ -1,0 +1,25 @@
+.tutorial-container {
+  min-height: calc(100vh - 80px); /* Adjust based on header height */
+  display: flex;
+  flex-direction: column;
+}
+
+.video-wrapper {
+  width: 100%;
+}
+
+/* Animations matching home page */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.video-wrapper {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* Custom styles to match the premium feel */
+:host ::ng-deep .mat-mdc-button-base {
+  height: auto !important;
+  line-height: inherit !important;
+}
